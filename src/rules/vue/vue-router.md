@@ -1,0 +1,13 @@
+# Vue Router Conventions
+
+## Route Organization
+- Define routes in `src/router/index.ts`.
+- Use lazy loading: `() => import('../views/About.vue')`.
+
+## Navigation Guards
+- Use `beforeEach` for authentication checks.
+- Keep guard logic in dedicated files under `src/router/guards/`.
+
+## Naming
+- Name all routes for programmatic navigation.
+- Use consistent path patterns: kebab-case.

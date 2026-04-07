@@ -1,0 +1,47 @@
+{
+  "name": "fe-kit",
+  "version": "0.1.0",
+  "description": "Frontend project scaffold CLI — init, enhance, and manage dev tools, skills, MCP, and framework rules.",
+  "type": "module",
+  "bin": {
+    "fe-kit": "dist/cli.mjs"
+  },
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "start": "node dist/cli.mjs",
+    "typecheck": "tsc --noEmit"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "files": [
+    "dist"
+  ],
+  "keywords": [
+    "cli",
+    "frontend",
+    "scaffold",
+    "vue",
+    "react",
+    "vite",
+    "webpack",
+    "rspack",
+    "typescript"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "commander": "^13.1.0",
+    "deepmerge": "^4.3.1",
+    "fs-extra": "^11.3.0",
+    "picocolors": "^1.1.1",
+    "prompts": "^2.4.2"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "^11.0.4",
+    "@types/node": "^22.15.2",
+    "@types/prompts": "^2.4.9",
+    "tsup": "^8.4.0",
+    "typescript": "^5.8.3"
+  }
+}

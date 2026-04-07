@@ -1,0 +1,13 @@
+# React Router Conventions
+
+## Route Organization
+- Define routes in `src/router/index.tsx` using `createBrowserRouter`.
+- Use lazy loading with `React.lazy()` for route components.
+
+## Layout Routes
+- Use layout routes for shared UI (nav, sidebar).
+- Place layouts in `src/layouts/`.
+
+## Data Loading
+- Use route loaders for data fetching when available.
+- Handle error states with `errorElement`.

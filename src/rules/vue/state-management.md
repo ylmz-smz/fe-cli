@@ -1,0 +1,11 @@
+# Vue State Management (Pinia)
+
+## Store Organization
+- One store per domain: `useUserStore`, `useCartStore`.
+- Place stores in `src/stores/`.
+
+## Best Practices
+- Use `defineStore` with setup syntax for better TypeScript support.
+- Keep store actions focused; delegate complex logic to service layers.
+- Use getters for derived state instead of computed in components.
+- Avoid storing UI-only state (modals, tooltips) in global stores.

@@ -1,0 +1,16 @@
+# TypeScript Conventions
+
+## Config
+- Enable `strict: true` in all projects.
+- Use path aliases (`@/`) for clean imports.
+
+## Types
+- Prefer interfaces for object shapes; use type for unions/intersections.
+- Export shared types from `src/types/`.
+- Avoid `enum`; prefer `as const` objects or union types.
+
+## Patterns
+- Use discriminated unions for variant types.
+- Narrow types with type guards, not type assertions.
+- Use `satisfies` to validate types without widening.
+- Generics should be named descriptively: `TItem`, `TResponse`.

@@ -1,0 +1,18 @@
+# Vue Component Conventions
+
+## File Naming
+- Use PascalCase for component files: `UserProfile.vue`.
+- Use kebab-case for component usage in templates: `<user-profile />`.
+
+## Structure
+- Order in SFC: `<script setup>` → `<template>` → `<style scoped>`.
+- One component per file.
+
+## Props & Events
+- Always type props with TypeScript interfaces via `defineProps<T>()`.
+- Use `defineEmits<T>()` for typed event declarations.
+- Provide default values for optional props.
+
+## Slots
+- Use named slots for complex layouts.
+- Document slot contracts with comments or types.
