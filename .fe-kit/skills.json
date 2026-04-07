@@ -1,0 +1,31 @@
+{
+  "enabled": [
+    {
+      "id": "frontend-patterns",
+      "source": "builtin",
+      "targets": [
+        "vscode",
+        "claude-code"
+      ],
+      "version": "0.1.0"
+    },
+    {
+      "id": "typescript-strict",
+      "source": "builtin",
+      "targets": [
+        "vscode",
+        "claude-code"
+      ],
+      "version": "0.1.0"
+    },
+    {
+      "id": "git-conventions",
+      "source": "builtin",
+      "targets": [
+        "vscode",
+        "claude-code"
+      ],
+      "version": "0.1.0"
+    }
+  ]
+}

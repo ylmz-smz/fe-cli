@@ -10,6 +10,7 @@ import type {
   McpEntry,
 } from '../types/fe-kit-config.js';
 import type { ProjectDetection } from '../core/detect-project.js';
+import type { StackDetection } from '../core/detect-stack.js';
 import { META_DIR, CLI_VERSION } from '../constants/meta.js';
 import { readJsonSafe, writeJsonSafe } from '../utils/fs.js';
 import { mergeConfig } from '../core/merge-config.js';
@@ -77,20 +78,23 @@ export async function writeFeKitMeta(answers: InitAnswers): Promise<void> {
 /** Called by `enhance` — merges into existing .fe-kit/ or creates it. */
 export async function updateFeKitMeta(
   projectRoot: string,
-  detection: ProjectDetection,
+  detection: ProjectDetection | StackDetection,
   answers: EnhanceAnswers,
 ): Promise<void> {
   const dir = metaDir(projectRoot);
   await fs.ensureDir(dir);
 
+  const fw = detection.framework;
+  const isClassicDetection = 'router' in detection;
+
   const projectPath = path.join(dir, 'project.json');
-  const existingProject = (await readJsonSafe<ProjectMeta>(projectPath)) ?? {
+  const existingProject = (await readJsonSafe<Record<string, unknown>>(projectPath)) ?? {
     name: detection.name,
-    framework: detection.framework,
-    router: detection.router ?? '',
-    stateManagement: detection.stateManagement ?? '',
+    framework: fw,
+    router: isClassicDetection ? ((detection as ProjectDetection).router ?? '') : '',
+    stateManagement: isClassicDetection ? ((detection as ProjectDetection).stateManagement ?? '') : '',
     bundler: detection.bundler ?? 'vite',
-    typescript: true as const,
+    typescript: true,
     lintTools: [],
     templateVersion: '0.1.0',
     rulesVersion: '0.1.0',
@@ -137,6 +141,6 @@ export async function updateFeKitMeta(
     mergeConfig(existingTools, { selectedTools: answers.devTools }),
   );
 
-  await writeRules(projectRoot, detection.framework);
+  await writeRules(projectRoot, fw);
   logger.success(`.fe-kit/ metadata updated`);
 }

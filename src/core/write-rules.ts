@@ -2,6 +2,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import fs from 'fs-extra';
 import type { Framework } from '../constants/frameworks.js';
+import type { StackFramework } from './detect-stack.js';
 import { META_DIR } from '../constants/meta.js';
 import { logger } from '../utils/logger.js';
 
@@ -13,12 +14,16 @@ function rulesSourceDir(): string {
 
 export async function writeRules(
   projectRoot: string,
-  framework: Framework,
+  framework: Framework | StackFramework,
 ): Promise<void> {
   const targetDir = path.join(projectRoot, META_DIR, 'rules');
   const srcBase = rulesSourceDir();
 
-  const dirs = [path.join(srcBase, framework), path.join(srcBase, 'common')];
+  const frameworkDir = mapFrameworkRulesDir(framework);
+  const dirs = [
+    ...(frameworkDir ? [path.join(srcBase, frameworkDir)] : []),
+    path.join(srcBase, 'common'),
+  ];
 
   for (const dir of dirs) {
     if (!(await fs.pathExists(dir))) continue;
@@ -27,4 +32,10 @@ export async function writeRules(
   }
 
   logger.success(`Rules for ${framework} written to ${META_DIR}/rules/`);
+}
+
+function mapFrameworkRulesDir(fw: Framework | StackFramework): string | null {
+  if (fw === 'vue' || fw === 'nuxt') return 'vue';
+  if (fw === 'react' || fw === 'next') return 'react';
+  return null;
 }

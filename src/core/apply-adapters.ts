@@ -1,5 +1,6 @@
 import type { AdapterContext, SkillSelection, McpSelection } from '../adapters/types.js';
 import type { Framework } from '../constants/frameworks.js';
+import type { StackFramework } from './detect-stack.js';
 import type { DevToolId } from '../constants/tools.js';
 import { getAdapters } from '../adapters/registry.js';
 import { getSkillById } from '../skills/catalog.js';
@@ -7,7 +8,7 @@ import { getMcpById } from '../mcp/catalog.js';
 import { logger } from '../utils/logger.js';
 
 export interface AdapterInput {
-  framework: Framework;
+  framework: Framework | StackFramework;
   devTools: DevToolId[];
   skills: string[];
   mcpServers: string[];

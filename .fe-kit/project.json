@@ -1,0 +1,12 @@
+{
+  "name": "fe-kit",
+  "framework": "unknown",
+  "router": "",
+  "stateManagement": "",
+  "bundler": "vite",
+  "typescript": true,
+  "lintTools": [],
+  "templateVersion": "0.1.0",
+  "rulesVersion": "0.1.0",
+  "cliVersion": "0.1.0"
+}

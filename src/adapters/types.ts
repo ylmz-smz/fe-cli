@@ -1,5 +1,6 @@
 import type { DevToolId } from '../constants/tools.js';
 import type { Framework } from '../constants/frameworks.js';
+import type { StackFramework } from '../core/detect-stack.js';
 
 export interface SkillSelection {
   id: string;
@@ -15,7 +16,7 @@ export interface McpSelection {
 
 export interface AdapterContext {
   projectRoot: string;
-  framework: Framework;
+  framework: Framework | StackFramework;
 }
 
 export interface ToolAdapter {
