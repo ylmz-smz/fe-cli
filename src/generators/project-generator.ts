@@ -26,6 +26,43 @@ export async function generateProject(answers: InitAnswers): Promise<void> {
 
   await patchPackageJson(projectPath, projectName, framework, bundler, router, stateManagement);
   logger.success('package.json configured');
+
+  await ensureNextStyleScaffold(projectPath, framework);
+}
+
+async function ensureNextStyleScaffold(projectPath: string, framework: InitAnswers['framework']): Promise<void> {
+  // Next.js-like organization (no service/api). Keep it additive to avoid breaking existing templates.
+  const dirs = [
+    path.join(projectPath, 'public'),
+    path.join(projectPath, 'src', 'app'),
+    path.join(projectPath, 'src', 'components'),
+    path.join(projectPath, 'src', 'hooks'),
+    path.join(projectPath, 'src', 'lib'),
+    path.join(projectPath, 'src', 'styles'),
+  ];
+
+  await Promise.all(dirs.map((d) => fs.ensureDir(d)));
+
+  // Minimal placeholders to make folders visible in git and IDEs.
+  const keepFiles = [
+    path.join(projectPath, 'src', 'app', '.gitkeep'),
+    path.join(projectPath, 'src', 'components', '.gitkeep'),
+    path.join(projectPath, 'src', 'hooks', '.gitkeep'),
+    path.join(projectPath, 'src', 'lib', '.gitkeep'),
+    path.join(projectPath, 'src', 'styles', '.gitkeep'),
+    path.join(projectPath, 'public', '.gitkeep'),
+  ];
+  await Promise.all(keepFiles.map((p) => fs.ensureFile(p)));
+
+  // Framework-specific convention hints (purely additive).
+  if (framework === 'vue') {
+    await fs.ensureFile(path.join(projectPath, 'src', 'hooks', 'README.md'));
+    await fs.writeFile(
+      path.join(projectPath, 'src', 'hooks', 'README.md'),
+      ['# hooks/', '', 'Vue 项目里这里更常放 `composables/`（可按团队习惯重命名）。', ''].join('\n'),
+      'utf-8',
+    );
+  }
 }
 
 async function generateMinimalProject(answers: InitAnswers): Promise<void> {
@@ -33,7 +70,6 @@ async function generateMinimalProject(answers: InitAnswers): Promise<void> {
   const srcDir = path.join(projectPath, 'src');
   await fs.ensureDir(srcDir);
 
-  const ext = framework === 'react' ? 'tsx' : 'ts';
   const mainFile = framework === 'react' ? 'main.tsx' : 'main.ts';
 
   const mainContent = framework === 'react'
