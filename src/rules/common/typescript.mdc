@@ -1,3 +1,8 @@
+---
+description: TypeScript conventions (strict config, type patterns, naming)
+globs: **/*.{ts,tsx}
+alwaysApply: false
+---
 # TypeScript Conventions
 
 ## Config

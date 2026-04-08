@@ -1,3 +1,8 @@
+---
+description: React component conventions (naming, structure, props, composition)
+globs: **/*.{tsx,jsx}
+alwaysApply: false
+---
 # React Component Conventions
 
 ## File Naming

@@ -1,3 +1,8 @@
+---
+description: React Router conventions (route organization, layouts, data loading)
+globs: **/router/**/*.{ts,tsx,js,jsx}
+alwaysApply: false
+---
 # React Router Conventions
 
 ## Route Organization

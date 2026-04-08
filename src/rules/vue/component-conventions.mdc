@@ -1,3 +1,8 @@
+---
+description: Vue SFC component conventions (naming, structure, props, slots)
+globs: **/*.vue
+alwaysApply: false
+---
 # Vue Component Conventions
 
 ## File Naming

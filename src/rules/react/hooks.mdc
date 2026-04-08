@@ -1,3 +1,8 @@
+---
+description: React hooks guidelines (rules of hooks, custom hooks, common patterns)
+globs: **/*.{ts,tsx,js,jsx}
+alwaysApply: false
+---
 # React Hooks Guidelines
 
 ## Rules of Hooks

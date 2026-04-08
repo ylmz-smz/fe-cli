@@ -1,3 +1,8 @@
+---
+description: Vue state management conventions for Pinia stores
+globs: **/stores/**/*.{ts,js}, **/*.vue
+alwaysApply: false
+---
 # Vue State Management (Pinia)
 
 ## Store Organization

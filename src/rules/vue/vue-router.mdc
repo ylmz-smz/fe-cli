@@ -1,3 +1,8 @@
+---
+description: Vue Router conventions (organization, guards, naming, lazy routes)
+globs: **/router/**/*.{ts,js}, **/*.vue
+alwaysApply: false
+---
 # Vue Router Conventions
 
 ## Route Organization
