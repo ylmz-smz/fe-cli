@@ -3,11 +3,10 @@ import type { EnhanceAnswers } from '../types/selections.js';
 import type { StackDetection } from '../core/detect-stack.js';
 import { summarizeStack } from '../core/detect-stack.js';
 import type { QualityTool } from '../constants/lint.js';
-import { TSLINT_DEPRECATION_WARNING } from '../constants/lint.js';
 import { DEV_TOOLS } from '../constants/tools.js';
 import { getSkillCatalog } from '../skills/catalog.js';
 import { getMcpCatalog } from '../mcp/catalog.js';
-import { logger } from '../utils/logger.js';
+
 
 interface QualityToolOption {
   id: QualityTool;
@@ -56,15 +55,6 @@ function getApplicableTools(stack: StackDetection): QualityToolOption[] {
     selected: false,
   });
 
-  if (stack.hasTypeScript) {
-    tools.push({
-      id: 'tslint',
-      label: 'TSLint (deprecated)',
-      description: TSLINT_DEPRECATION_WARNING,
-      selected: false,
-    });
-  }
-
   return tools;
 }
 
@@ -80,7 +70,7 @@ export async function runEnhancePrompts(
         type: 'multiselect',
         name: 'devTools',
         message: `Dev tools to configure for this ${stackLabel} project:`,
-        choices: DEV_TOOLS.map((t) => ({ title: t, value: t, selected: t === 'vscode' })),
+        choices: DEV_TOOLS.map((t) => ({ title: t, value: t, selected: t === 'cursor' })),
         min: 1,
         hint: 'Select at least one',
       },
@@ -120,10 +110,6 @@ export async function runEnhancePrompts(
   );
 
   if (!response.devTools) return null;
-
-  if (response.qualityTools?.includes('tslint')) {
-    logger.warn(TSLINT_DEPRECATION_WARNING);
-  }
 
   return {
     devTools: response.devTools,

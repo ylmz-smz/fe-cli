@@ -4,6 +4,7 @@ import type { ToolAdapter, AdapterContext, SkillSelection, McpSelection } from '
 import { readJsonSafe, writeJsonSafe } from '../utils/fs.js';
 import { mergeConfig } from '../core/merge-config.js';
 import { TOOL_CONFIG_PATHS } from '../core/paths.js';
+import { loadRuleSources } from '../core/rule-writers.js';
 import { logger } from '../utils/logger.js';
 
 export const traeAdapter: ToolAdapter = {
@@ -26,14 +27,25 @@ export const traeAdapter: ToolAdapter = {
     const configPath = path.join(ctx.projectRoot, TOOL_CONFIG_PATHS.trae, 'mcp.json');
     await fs.ensureDir(path.dirname(configPath));
     const existing = (await readJsonSafe<Record<string, unknown>>(configPath)) ?? {};
-    const mcpEntries = Object.fromEntries(mcp.map((m) => [m.id, m.config]));
-    await writeJsonSafe(configPath, mergeConfig(existing, mcpEntries));
-    logger.success('Trae: MCP config written');
+    const mcpSection = (existing.mcpServers as Record<string, unknown>) ?? {};
+
+    for (const m of mcp) {
+      mcpSection[m.id] = m.config;
+    }
+
+    await writeJsonSafe(configPath, mergeConfig(existing, { mcpServers: mcpSection }));
+    logger.success('Trae: MCP config written to .trae/mcp.json');
   },
 
   async applyRules(ctx) {
     const rulesDir = path.join(ctx.projectRoot, TOOL_CONFIG_PATHS.trae, 'rules');
     await fs.ensureDir(rulesDir);
-    logger.success('Trae: rules directory ensured');
+
+    const rules = await loadRuleSources(ctx.framework);
+    for (const rule of rules) {
+      const filename = `${rule.category}-${rule.name}.md`;
+      await fs.writeFile(path.join(rulesDir, filename), rule.content + '\n', 'utf-8');
+    }
+    logger.success('Trae: rules written to .trae/rules/');
   },
 };

@@ -15,6 +15,17 @@ function copyDirSync(src: string, dest: string) {
   }
 }
 
+/** Copy only subdirectories (skill templates) from src/skills/, skip .ts source files. */
+function copySkillDirs(src: string, dest: string) {
+  mkdirSync(dest, { recursive: true });
+  for (const entry of readdirSync(src)) {
+    const srcPath = join(src, entry);
+    if (statSync(srcPath).isDirectory()) {
+      copyDirSync(srcPath, join(dest, entry));
+    }
+  }
+}
+
 export default defineConfig({
   entry: ['src/cli.ts'],
   format: ['esm'],
@@ -29,5 +40,6 @@ export default defineConfig({
   onSuccess: async () => {
     copyDirSync('src/templates', 'dist/templates');
     copyDirSync('src/rules', 'dist/rules');
+    copySkillDirs('src/skills', 'dist/skills');
   },
 });

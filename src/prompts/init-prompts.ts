@@ -4,10 +4,10 @@ import type { InitAnswers } from '../types/selections.js';
 import { FRAMEWORKS, ROUTERS, STATE_MANAGERS, type Framework } from '../constants/frameworks.js';
 import { BUNDLERS } from '../constants/bundlers.js';
 import { DEV_TOOLS } from '../constants/tools.js';
-import { LINT_TOOLS, TSLINT_DEPRECATION_WARNING } from '../constants/lint.js';
+import { LINT_TOOLS } from '../constants/lint.js';
 import { getSkillCatalog } from '../skills/catalog.js';
 import { getMcpCatalog } from '../mcp/catalog.js';
-import { logger } from '../utils/logger.js';
+
 
 export async function runInitPrompts(): Promise<InitAnswers | null> {
   const response = await prompts(
@@ -60,9 +60,9 @@ export async function runInitPrompts(): Promise<InitAnswers | null> {
         name: 'lintTools',
         message: 'Code quality tools (space to toggle):',
         choices: LINT_TOOLS.map((t) => ({
-          title: t === 'tslint' ? `${t} (deprecated)` : t,
+          title: t,
           value: t,
-          selected: t !== 'tslint',
+          selected: true,
         })),
         hint: 'ESLint + Prettier recommended',
       },
@@ -70,7 +70,7 @@ export async function runInitPrompts(): Promise<InitAnswers | null> {
         type: 'multiselect',
         name: 'devTools',
         message: 'Dev tools to configure:',
-        choices: DEV_TOOLS.map((t) => ({ title: t, value: t, selected: t === 'vscode' })),
+        choices: DEV_TOOLS.map((t) => ({ title: t, value: t, selected: t === 'cursor' })),
         min: 1,
         hint: 'Select at least one',
       },
@@ -99,10 +99,6 @@ export async function runInitPrompts(): Promise<InitAnswers | null> {
   );
 
   if (!response.projectName) return null;
-
-  if (response.lintTools?.includes('tslint')) {
-    logger.warn(TSLINT_DEPRECATION_WARNING);
-  }
 
   return response as InitAnswers;
 }

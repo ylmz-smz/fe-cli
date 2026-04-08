@@ -3,24 +3,16 @@ import fs from 'fs-extra';
 import type { ToolAdapter, AdapterContext, SkillSelection, McpSelection } from './types.js';
 import { readJsonSafe, writeJsonSafe } from '../utils/fs.js';
 import { mergeConfig } from '../core/merge-config.js';
+import { writeCopilotInstructions } from '../core/rule-writers.js';
 import { logger } from '../utils/logger.js';
 import { TOOL_CONFIG_PATHS } from '../core/paths.js';
 
 export const vscodeAdapter: ToolAdapter = {
   id: 'vscode',
 
-  async applySkills(ctx, skills) {
+  async applySkills(_ctx, skills) {
     if (skills.length === 0) return;
-    const dir = path.join(ctx.projectRoot, TOOL_CONFIG_PATHS.vscode);
-    await fs.ensureDir(dir);
-
-    const settingsPath = path.join(dir, 'settings.json');
-    const existing = (await readJsonSafe<Record<string, unknown>>(settingsPath)) ?? {};
-    const merged = mergeConfig(existing, {
-      'fe-kit.skills': skills.map((s) => s.id),
-    });
-    await writeJsonSafe(settingsPath, merged);
-    logger.success('VSCode: skills written to .vscode/settings.json');
+    logger.info('VS Code: skills are applied via Copilot instructions — no separate skills directory.');
   },
 
   async applyMcp(ctx, mcp) {
@@ -28,14 +20,16 @@ export const vscodeAdapter: ToolAdapter = {
     const dir = path.join(ctx.projectRoot, TOOL_CONFIG_PATHS.vscode);
     await fs.ensureDir(dir);
 
-    const settingsPath = path.join(dir, 'settings.json');
-    const existing = (await readJsonSafe<Record<string, unknown>>(settingsPath)) ?? {};
-    const mcpEntries = Object.fromEntries(mcp.map((m) => [m.id, m.config]));
-    const merged = mergeConfig(existing, {
-      'fe-kit.mcp': mcpEntries,
-    });
-    await writeJsonSafe(settingsPath, merged);
-    logger.success('VSCode: MCP config written to .vscode/settings.json');
+    const configPath = path.join(dir, 'mcp.json');
+    const existing = (await readJsonSafe<Record<string, unknown>>(configPath)) ?? {};
+    const serversSection = (existing.servers as Record<string, unknown>) ?? {};
+
+    for (const m of mcp) {
+      serversSection[m.id] = m.config;
+    }
+
+    await writeJsonSafe(configPath, mergeConfig(existing, { servers: serversSection }));
+    logger.success('VS Code: MCP config written to .vscode/mcp.json (servers)');
   },
 
   async applyRules(ctx) {
@@ -55,6 +49,8 @@ export const vscodeAdapter: ToolAdapter = {
     for (const ext of recommended) recs.add(ext);
 
     await writeJsonSafe(extensionsPath, { recommendations: [...recs] });
-    logger.success('VSCode: extensions.json updated');
+
+    await writeCopilotInstructions(ctx.projectRoot, ctx.framework);
+    logger.success('VS Code: extensions.json + .github/copilot-instructions.md updated');
   },
 };

@@ -34,7 +34,6 @@ export async function writeFeKitMeta(answers: InitAnswers): Promise<void> {
     bundler: answers.bundler,
     typescript: true,
     lintTools: answers.lintTools,
-    legacyLint: answers.lintTools.includes('tslint') ? 'tslint' : undefined,
     templateVersion: '0.1.0',
     rulesVersion: '0.1.0',
     cliVersion: CLI_VERSION,

@@ -12,7 +12,6 @@ export interface ProjectMeta {
   bundler: Bundler;
   typescript: true;
   lintTools: LintTool[];
-  legacyLint?: 'tslint';
   templateVersion: string;
   rulesVersion: string;
   cliVersion: string;

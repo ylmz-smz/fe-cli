@@ -4,6 +4,7 @@ import type { ToolAdapter, AdapterContext, SkillSelection, McpSelection } from '
 import { readJsonSafe, writeJsonSafe } from '../utils/fs.js';
 import { mergeConfig } from '../core/merge-config.js';
 import { TOOL_CONFIG_PATHS } from '../core/paths.js';
+import { loadRuleSources } from '../core/rule-writers.js';
 import { logger } from '../utils/logger.js';
 
 export const claudeCodeAdapter: ToolAdapter = {
@@ -11,15 +12,21 @@ export const claudeCodeAdapter: ToolAdapter = {
 
   async applySkills(ctx, skills) {
     if (skills.length === 0) return;
-    const dir = path.join(ctx.projectRoot, TOOL_CONFIG_PATHS['claude-code']);
-    await fs.ensureDir(dir);
+    const skillsRoot = path.join(ctx.projectRoot, TOOL_CONFIG_PATHS['claude-code'], 'skills');
+    await fs.ensureDir(skillsRoot);
 
     for (const skill of skills) {
-      const filePath = path.join(dir, 'skills', `${skill.id}.md`);
-      await fs.ensureDir(path.dirname(filePath));
-      await fs.writeFile(filePath, skill.content, 'utf-8');
+      const targetDir = path.join(skillsRoot, skill.id);
+      await fs.ensureDir(targetDir);
+
+      if (skill.sourcePath) {
+        const sourceDir = path.dirname(skill.sourcePath);
+        await fs.copy(sourceDir, targetDir, { overwrite: true });
+      } else {
+        await fs.writeFile(path.join(targetDir, 'SKILL.md'), skill.content, 'utf-8');
+      }
     }
-    logger.success('Claude Code: skills written to .claude/skills/');
+    logger.success('Claude Code: skills copied to .claude/skills/<skill>/SKILL.md');
   },
 
   async applyMcp(ctx, mcp) {
@@ -39,6 +46,12 @@ export const claudeCodeAdapter: ToolAdapter = {
   async applyRules(ctx) {
     const rulesDir = path.join(ctx.projectRoot, TOOL_CONFIG_PATHS['claude-code'], 'rules');
     await fs.ensureDir(rulesDir);
-    logger.success('Claude Code: rules directory ensured at .claude/rules/');
+
+    const rules = await loadRuleSources(ctx.framework);
+    for (const rule of rules) {
+      const filename = `${rule.category}-${rule.name}.md`;
+      await fs.writeFile(path.join(rulesDir, filename), rule.content + '\n', 'utf-8');
+    }
+    logger.success('Claude Code: rules written to .claude/rules/');
   },
 };

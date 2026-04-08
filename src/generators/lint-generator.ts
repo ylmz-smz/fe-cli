@@ -17,7 +17,6 @@ const GENERATORS: Record<LintTool, (root: string, fw: string) => Promise<void>> 
   stylelint: generateStylelint,
   prettier: generatePrettier,
   editorconfig: generateEditorConfig,
-  tslint: generateTslint,
 };
 
 async function generateEslint(root: string, fw: string): Promise<void> {
@@ -141,21 +140,3 @@ async function generateEditorConfig(root: string): Promise<void> {
   logger.success('EditorConfig generated');
 }
 
-async function generateTslint(root: string): Promise<void> {
-  logger.warn('TSLint is deprecated. Generating placeholder for legacy compatibility.');
-
-  const pkgPath = path.join(root, 'package.json');
-  const pkg = await fs.readJson(pkgPath);
-  pkg.devDependencies = { ...pkg.devDependencies, tslint: '^6.1.3' };
-  await fs.writeJson(pkgPath, pkg, { spaces: 2 });
-
-  await fs.writeJson(
-    path.join(root, 'tslint.json'),
-    {
-      extends: ['tslint:recommended'],
-      rules: {},
-      linterOptions: { exclude: ['node_modules/**'] },
-    },
-    { spaces: 2 },
-  );
-}

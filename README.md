@@ -2,6 +2,26 @@
 
 前端项目脚手架 CLI：初始化新项目、增强现有项目，并管理开发工具、Skills、MCP 与框架规则（Vue / React + TypeScript，支持 Vite、Webpack、Rspack）。
 
+## Breaking Changes (v0.2.0)
+
+- **TSLint 已移除**：TSLint 早在 2019 年即被官方废弃，fe-kit 不再提供 TSLint 选项与生成器。请使用 ESLint + `typescript-eslint`（已为默认）。
+- **配置输出路径变更**：Skills、Rules、MCP 不再写入 `.fe-kit/` 作为编辑器配置，改为直接写入各编辑器标准目录（见下文）。如果你之前依赖 `.fe-kit/skills.json` 或 `.fe-kit/mcp.json` 作为编辑器读取入口，需手动迁移。
+- **新增 Cursor 作为独立适配目标**：之前只有 `vscode`，现在 `cursor` 是独立选项，默认选中。
+
+## 编辑器配置输出
+
+`init` / `enhance` 执行后，根据选择的开发工具，配置会写入以下**编辑器标准目录**：
+
+| 编辑器 | Rules | Skills | MCP |
+|--------|-------|--------|-----|
+| **Cursor** | `.cursor/rules/*.mdc` | — (通过 rules 生效) | `.cursor/mcp.json` (`mcpServers`) |
+| **Claude Code** | `.claude/rules/*.md` | `.claude/skills/<id>/SKILL.md` | `.mcp.json` (`mcpServers`) |
+| **VS Code + Copilot** | `.github/copilot-instructions.md` | — (通过 instructions 生效) | `.vscode/mcp.json` (`servers`) |
+| **CodeBuddy** | `.codebuddy/rules/*.mdc` | — (通过 rules 生效) | `.mcp.json` (`mcpServers`) |
+| **Trae** | `.trae/rules/*.md` | `.trae/rules/<id>.md` | `.trae/mcp.json` (`mcpServers`) |
+
+`.fe-kit/` 目录仍用于存储 fe-kit 内部元数据（`project.json` 等），但不再作为编辑器配置的输出目标。
+
 ## 环境要求
 
 - Node.js ≥ 18
@@ -33,6 +53,15 @@ pnpm run typecheck
 node dist/cli.mjs --help
 ```
 
+本地全局命令执行
+```bash
+pnpm run build
+pnpm link --global
+fe-kit --help
+
+#（用完可 pnpm unlink --global fe-kit 清理）
+```
+
 ## 命令
 
 | 命令 | 说明 |
@@ -43,6 +72,9 @@ node dist/cli.mjs --help
 ## 仓库结构（节选）
 
 - `src/` — CLI 源码、模板、规则与内置资源
+- `src/adapters/` — 各编辑器输出适配（Cursor / Claude Code / VS Code / CodeBuddy / Trae / IDEA）
+- `src/rules/` — 内置规则 Markdown 源（按 common / react / vue 分类）
+- `src/skills/` — 技能目录（`catalog.ts` + 各 `<skill>/SKILL.md` 预设模板，构建时拷贝到 `dist/skills/`）
 - `dist/` — 构建产物（发布内容）
 - **`plan/`** — 见下文
 

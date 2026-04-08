@@ -12,7 +12,6 @@ const GENERATORS: Record<QualityTool, Generator> = {
   prettier: generatePrettier,
   editorconfig: generateEditorConfig,
   commitlint: generateCommitlint,
-  tslint: generateTslint,
 };
 
 export async function generateQualityTooling(
@@ -287,32 +286,6 @@ async function generateCommitlint(root: string, stack: StackDetection): Promise<
   }
 
   logger.success('commitlint + husky generated');
-}
-
-// ---------------------------------------------------------------------------
-// TSLint (deprecated, legacy compat)
-// ---------------------------------------------------------------------------
-
-async function generateTslint(root: string): Promise<void> {
-  logger.warn('TSLint is deprecated. Generating placeholder for legacy compatibility.');
-
-  const pkg = await readPkg(root);
-  pkg.devDependencies = {
-    ...(pkg.devDependencies as Record<string, string> | undefined),
-    tslint: '^6.1.3',
-  };
-  await writePkg(root, pkg);
-
-  await fs.writeJson(
-    path.join(root, 'tslint.json'),
-    {
-      extends: ['tslint:recommended'],
-      rules: {},
-      linterOptions: { exclude: ['node_modules/**'] },
-    },
-    { spaces: 2 },
-  );
-  logger.success('TSLint config generated');
 }
 
 // ---------------------------------------------------------------------------

@@ -6,6 +6,8 @@ export interface SkillSelection {
   id: string;
   label: string;
   content: string;
+  /** Absolute path to the original SKILL.md file (file-backed skills only). */
+  sourcePath?: string;
 }
 
 export interface McpSelection {

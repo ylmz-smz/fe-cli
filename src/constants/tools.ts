@@ -1,6 +1,7 @@
 export const DEV_TOOLS = [
-  'vscode',
+  'cursor',
   'claude-code',
+  'vscode',
   'codebuddy-cn',
   'trae',
   'idea',
