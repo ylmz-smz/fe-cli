@@ -3,11 +3,19 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { execFileSync } from 'node:child_process';
 import prompts from 'prompts';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const projectRoot = path.resolve(__dirname, '..');
 const pkgPath = path.join(projectRoot, 'package.json');
+
+function parseArgs(argv) {
+  const args = new Set(argv);
+  return {
+    commit: !args.has('--no-commit'),
+  };
+}
 
 function parseSemver(v) {
   const m = /^(\d+)\.(\d+)\.(\d+)$/.exec(String(v).trim());
@@ -34,7 +42,27 @@ function bump(current, kind) {
   return next;
 }
 
+function tryGitCommit({ nextVersion }) {
+  const message = `chore(release): bump version to v${nextVersion}`;
+  try {
+    execFileSync('git', ['rev-parse', '--is-inside-work-tree'], { cwd: projectRoot, stdio: 'ignore' });
+  } catch {
+    console.warn('[bump-version] Not a git repo; skip auto-commit');
+    return;
+  }
+
+  try {
+    execFileSync('git', ['add', 'package.json'], { cwd: projectRoot, stdio: 'inherit' });
+    execFileSync('git', ['commit', '-m', message], { cwd: projectRoot, stdio: 'inherit' });
+    console.log(`[bump-version] Committed: ${message}`);
+  } catch (e) {
+    console.error('[bump-version] Git commit failed; version file was still updated.');
+    process.exitCode = 1;
+  }
+}
+
 async function main() {
+  const opts = parseArgs(process.argv.slice(2));
   const raw = await fs.readFile(pkgPath, 'utf-8');
   const pkg = JSON.parse(raw);
   const currentRaw = pkg?.version;
@@ -106,6 +134,10 @@ async function main() {
   pkg.version = nextVersion;
   await fs.writeFile(pkgPath, JSON.stringify(pkg, null, 2) + '\n', 'utf-8');
   console.log(`[bump-version] Updated version to ${nextVersion}`);
+
+  if (opts.commit) {
+    tryGitCommit({ nextVersion });
+  }
 }
 
 await main();
