@@ -1,0 +1,26 @@
+---
+description: Cursor 规则（.mdc）的格式与约定
+alwaysApply: true
+---
+
+## Frontmatter（必须）
+
+```text
+---
+description: 这条规则解决什么问题/何时适用
+globs: **/*.ts, **/*.tsx
+alwaysApply: false
+---
+```
+
+- `description`: 让人一眼知道“何时该用这条规则”
+- `globs`: **用逗号分隔**的一行字符串（不要用 YAML 数组）
+- `alwaysApply`:
+  - `true`: 永远生效（用于沟通/交付/全局工程约束）
+  - `false`: 仅在 `globs` 匹配时生效（用于特定语言/目录规范）
+
+## 内容风格
+
+- 一条规则只管一件事，超过 50 行就拆分
+- 给“可执行”的约束：优先写 **Do/Don’t** + 最小例子
+- 默认优先不破坏现有用户空间（向后兼容 > 理论正确）
