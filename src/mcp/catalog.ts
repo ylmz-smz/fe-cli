@@ -23,7 +23,7 @@ const BUILTIN_MCP: McpDefinition[] = [
     description: 'Step-by-step reasoning MCP server for complex problem solving.',
     config: {
       command: 'npx',
-      args: ['-y', '@modelcontextprotocol/sequential-thinking-mcp@latest'],
+      args: ['-y', '@modelcontextprotocol/server-sequential-thinking@latest'],
     },
   },
   {
