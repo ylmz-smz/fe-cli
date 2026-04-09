@@ -1,9 +1,9 @@
 ---
-description: Review UI code for 中英人寿数智化项目（App/H5）UI 设计规范 v1.1 compliance
+description: Review UI code for （App/H5）UI 设计规范 compliance
 argument-hint: <file-or-pattern>
 ---
 
-# 中英人寿数智化项目（App/H5）UI 设计规范 v1.1（规则说明）
+# 设计规范 规则说明）
 
 输出格式遵循 Web Interface Guidelines 的“分组列规则 + 最终 ✓ pass”风格（不包含 source:loc 标记）。
 

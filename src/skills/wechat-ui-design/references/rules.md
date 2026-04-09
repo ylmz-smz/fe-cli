@@ -1,9 +1,9 @@
 ---
-description: Review UI code for 中英人寿官微 UI 设计规范 compliance
+description: Review UI code for 官微 UI 设计规范 compliance
 argument-hint: <file-or-pattern>
 ---
 
-# 中英人寿官微 UI 设计规范（规则说明）
+# 官微 UI 设计规范（规则说明）
 
 输出格式遵循 Web Interface Guidelines 的“按分组列问题/规则 + 最终 ✓ pass”风格（不包含 source:loc 标记）。
 

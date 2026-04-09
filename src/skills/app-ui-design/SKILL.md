@@ -1,15 +1,15 @@
 ---
 name: app-ui-design
-description: Review App/H5 UI code for 中英人寿数智化项目 UI 设计规范 v1.1 compliance. Use when the user asks to “检查 UI 规范/对齐规范/审查页面”, “review UI”, “按设计规范检查 App/H5”, or wants a terse issues list in `file:line - finding` format plus a final `✓ pass` when clean.
+description: Review App/H5 UI code for UI 设计规范 compliance. Use when the user asks to “检查 UI 规范/对齐规范/审查页面”, “review UI”, “按设计规范检查 App/H5”, or wants a terse issues list in `file:line - finding` format plus a final `✓ pass` when clean.
 metadata:
   author: internal
   version: "1.0.0"
   argument-hint: <file-or-pattern>
 ---
 
-# App UI Design Guidelines Checker (中英人寿数智化项目 v1.1)
+# App UI Design Guidelines Checker
 
-在开发过程中，按“中英人寿数智化项目设计规范 v1.1（App/H5）”对指定文件进行快速审查，输出**可定位、可执行**的问题清单。
+在开发过程中，按“设计规范”对指定文件进行快速审查，输出**可定位、可执行**的问题清单。
 
 输出风格对齐 Web Interface Guidelines：**先读取最新规范 → 读取目标文件 → 按固定格式输出问题**。
 
