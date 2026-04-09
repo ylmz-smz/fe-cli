@@ -22,9 +22,9 @@ metadata:
 
 ## Guidelines Source
 
-默认从仓库内的规则说明文件读取（你可以把它当作“本项目的 WeChat UI 规范单一真源”）：
+默认从本 skill 目录内的规则说明文件读取（你可以把它当作“本 skill 的 WeChat UI 规范单一真源”，随 skill 一起被复制到运行环境）：
 
-- `src/skills/wechat-ui-design/references/rules.md`
+- `references/rules.md`（相对 `SKILL.md`）
 
 可选：如果你把规则托管到远程（例如 GitHub Raw），审查时应优先从远程拉取最新版本，再进行检查。
 
