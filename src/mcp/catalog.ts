@@ -23,7 +23,7 @@ const BUILTIN_MCP: McpDefinition[] = [
     description: 'Step-by-step reasoning MCP server for complex problem solving.',
     config: {
       command: 'npx',
-      args: ['-y', '@anthropic/sequential-thinking-mcp@latest'],
+      args: ['-y', '@modelcontextprotocol/sequential-thinking-mcp@latest'],
     },
   },
   {
@@ -32,7 +32,7 @@ const BUILTIN_MCP: McpDefinition[] = [
     description: 'Read/write project files via MCP.',
     config: {
       command: 'npx',
-      args: ['-y', '@anthropic/filesystem-mcp@latest'],
+      args: ['-y', '@modelcontextprotocol/filesystem-mcp@latest'],
     },
   },
   {
