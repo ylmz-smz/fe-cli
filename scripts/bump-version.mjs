@@ -14,6 +14,7 @@ function parseArgs(argv) {
   const args = new Set(argv);
   return {
     commit: !args.has('--no-commit'),
+    push: args.has('--push'),
   };
 }
 
@@ -42,21 +43,66 @@ function bump(current, kind) {
   return next;
 }
 
-function tryGitCommit({ nextVersion }) {
-  const message = `chore(release): bump version to v${nextVersion}`;
+function isGitRepo() {
   try {
     execFileSync('git', ['rev-parse', '--is-inside-work-tree'], { cwd: projectRoot, stdio: 'ignore' });
+    return true;
   } catch {
+    return false;
+  }
+}
+
+function tryGetUpstreamRef() {
+  try {
+    const out = execFileSync('git', ['rev-parse', '--abbrev-ref', '--symbolic-full-name', '@{u}'], {
+      cwd: projectRoot,
+      stdio: ['ignore', 'pipe', 'ignore'],
+      encoding: 'utf-8',
+    });
+    const ref = String(out).trim();
+    return ref ? ref : null;
+  } catch {
+    return null;
+  }
+}
+
+function tryGitCommit({ nextVersion }) {
+  const message = `chore(release): bump version to v${nextVersion}`;
+  if (!isGitRepo()) {
     console.warn('[bump-version] Not a git repo; skip auto-commit');
-    return;
+    return false;
   }
 
   try {
     execFileSync('git', ['add', 'package.json'], { cwd: projectRoot, stdio: 'inherit' });
     execFileSync('git', ['commit', '-m', message], { cwd: projectRoot, stdio: 'inherit' });
     console.log(`[bump-version] Committed: ${message}`);
+    return true;
   } catch (e) {
     console.error('[bump-version] Git commit failed; version file was still updated.');
+    process.exitCode = 1;
+    return false;
+  }
+}
+
+function tryGitPush() {
+  if (!isGitRepo()) {
+    console.warn('[bump-version] Not a git repo; skip auto-push');
+    return;
+  }
+
+  try {
+    const upstream = tryGetUpstreamRef();
+    if (upstream) {
+      execFileSync('git', ['push'], { cwd: projectRoot, stdio: 'inherit' });
+      console.log('[bump-version] Pushed to upstream');
+      return;
+    }
+
+    execFileSync('git', ['push', '-u', 'origin', 'HEAD'], { cwd: projectRoot, stdio: 'inherit' });
+    console.log('[bump-version] Pushed with -u origin HEAD');
+  } catch (e) {
+    console.error('[bump-version] Git push failed; commit was still created.');
     process.exitCode = 1;
   }
 }
@@ -136,7 +182,10 @@ async function main() {
   console.log(`[bump-version] Updated version to ${nextVersion}`);
 
   if (opts.commit) {
-    tryGitCommit({ nextVersion });
+    const committed = tryGitCommit({ nextVersion });
+    if (committed && opts.push) {
+      tryGitPush();
+    }
   }
 }
 
