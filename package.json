@@ -1,5 +1,5 @@
 {
-  "name": "@ylmz_smz/fe-kit",
+  "name": "fe-kit-cli",
   "version": "0.0.1",
   "description": "Frontend project scaffold CLI — init, enhance, and manage dev tools, skills, MCP, and framework rules.",
   "type": "module",
