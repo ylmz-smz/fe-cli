@@ -9,7 +9,18 @@ import { logger } from '../utils/logger.js';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 function rulesSourceDir(): string {
-  return path.resolve(__dirname, '..', 'rules');
+  const candidates = [
+    path.resolve(__dirname, 'rules'),
+    path.resolve(__dirname, '..', 'rules'),
+    path.resolve(__dirname, '..', '..', 'src', 'rules'),
+    path.resolve(process.cwd(), 'src', 'rules'),
+  ];
+
+  for (const dir of candidates) {
+    if (fs.existsSync(dir)) return dir;
+  }
+
+  return candidates[0];
 }
 
 export async function writeRules(

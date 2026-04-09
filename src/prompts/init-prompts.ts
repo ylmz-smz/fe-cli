@@ -79,7 +79,8 @@ export async function runInitPrompts(): Promise<InitAnswers | null> {
         name: 'skills',
         message: 'Built-in Skills to enable:',
         choices: getSkillCatalog().map((s) => ({
-          title: `${s.label} — ${s.description}`,
+          title: s.label,
+          description: s.description,
           value: s.id,
           selected: false,
         })),
@@ -89,7 +90,8 @@ export async function runInitPrompts(): Promise<InitAnswers | null> {
         name: 'mcpServers',
         message: 'MCP servers to enable:',
         choices: getMcpCatalog().map((m) => ({
-          title: `${m.label} — ${m.description}`,
+          title: m.label,
+          description: m.description,
           value: m.id,
           selected: false,
         })),

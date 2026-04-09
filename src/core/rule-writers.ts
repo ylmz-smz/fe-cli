@@ -3,11 +3,27 @@ import { fileURLToPath } from 'node:url';
 import fs from 'fs-extra';
 import type { Framework } from '../constants/frameworks.js';
 import type { StackFramework } from './detect-stack.js';
+import { logger } from '../utils/logger.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 function rulesSourceDir(): string {
-  return path.resolve(__dirname, '..', 'rules');
+  const candidates = [
+    // Built output: dist/rules (when bundled into dist/cli.mjs)
+    path.resolve(__dirname, 'rules'),
+    // Built output: dist/rules (when running from dist/core/*)
+    path.resolve(__dirname, '..', 'rules'),
+    // Source repo: src/rules (when running from src/core/*)
+    path.resolve(__dirname, '..', '..', 'src', 'rules'),
+    // Fallback for running from repo root without a build
+    path.resolve(process.cwd(), 'src', 'rules'),
+  ];
+
+  for (const dir of candidates) {
+    if (fs.existsSync(dir)) return dir;
+  }
+
+  return candidates[0];
 }
 
 export interface RuleFile {
@@ -17,6 +33,13 @@ export interface RuleFile {
   category: string;
   /** Raw markdown body (no frontmatter) */
   content: string;
+}
+
+function stripFrontmatter(raw: string): string {
+  if (!raw.startsWith('---')) return raw.trim();
+  const end = raw.indexOf('\n---', 3);
+  if (end === -1) return raw.trim();
+  return raw.slice(end + '\n---'.length).replace(/^\s*\n+/, '').trimEnd();
 }
 
 function mapFrameworkDir(fw: Framework | StackFramework): string | null {
@@ -29,6 +52,10 @@ export async function loadRuleSources(
   framework: Framework | StackFramework,
 ): Promise<RuleFile[]> {
   const srcBase = rulesSourceDir();
+  if (!(await fs.pathExists(srcBase))) {
+    logger.warn(`Rules source directory not found: ${srcBase}`);
+    return [];
+  }
   const fwDir = mapFrameworkDir(framework);
   const dirs: { dir: string; category: string }[] = [
     { dir: path.join(srcBase, 'common'), category: 'common' },
@@ -42,12 +69,13 @@ export async function loadRuleSources(
     if (!(await fs.pathExists(dir))) continue;
     const files = await fs.readdir(dir);
     for (const file of files) {
-      if (!file.endsWith('.md')) continue;
-      const content = await fs.readFile(path.join(dir, file), 'utf-8');
+      const ext = path.extname(file).toLowerCase();
+      if (ext !== '.md' && ext !== '.mdc') continue;
+      const raw = await fs.readFile(path.join(dir, file), 'utf-8');
       rules.push({
-        name: path.basename(file, '.md'),
+        name: path.basename(file, ext),
         category,
-        content: content.trim(),
+        content: stripFrontmatter(raw),
       });
     }
   }

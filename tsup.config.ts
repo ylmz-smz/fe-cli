@@ -1,6 +1,7 @@
 import { defineConfig } from 'tsup';
 import { copyFileSync, mkdirSync, readdirSync, statSync } from 'fs';
 import { join, relative } from 'path';
+import pkg from './package.json';
 
 function copyDirSync(src: string, dest: string) {
   mkdirSync(dest, { recursive: true });
@@ -35,6 +36,9 @@ export default defineConfig({
   splitting: false,
   sourcemap: true,
   dts: false,
+  define: {
+    __CLI_VERSION__: JSON.stringify(pkg.version),
+  },
   banner: { js: '#!/usr/bin/env node' },
   outExtension: () => ({ js: '.mjs' }),
   onSuccess: async () => {

@@ -90,7 +90,8 @@ export async function runEnhancePrompts(
         name: 'skills',
         message: 'Skills to add:',
         choices: getSkillCatalog().map((s) => ({
-          title: `${s.label} — ${s.description}`,
+          title: s.label,
+          description: s.description,
           value: s.id,
           selected: false,
         })),
@@ -100,7 +101,8 @@ export async function runEnhancePrompts(
         name: 'mcpServers',
         message: 'MCP servers to add:',
         choices: getMcpCatalog().map((m) => ({
-          title: `${m.label} — ${m.description}`,
+          title: m.label,
+          description: m.description,
           value: m.id,
           selected: false,
         })),
