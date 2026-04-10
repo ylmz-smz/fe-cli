@@ -3,3 +3,5 @@ package-lock.json
 dist/
 *.tsbuildinfo
 .DS_Store
+# CocoIndex Code (ccc)
+/.cocoindex_code/
