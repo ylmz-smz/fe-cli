@@ -13,14 +13,15 @@
 `init` / `enhance` 执行后，根据选择的开发工具，配置会写入以下**编辑器标准目录**：
 
 | 编辑器 | Rules | Skills | MCP |
-|--------|-------|--------|-----|
-| **Cursor** | `.cursor/rules/*.mdc` | — (通过 rules 生效) | `.cursor/mcp.json` (`mcpServers`) |
-| **Claude Code** | `.claude/rules/*.md` | `.claude/skills/<id>/SKILL.md` | `.mcp.json` (`mcpServers`) |
-| **VS Code + Copilot** | `.github/copilot-instructions.md` | — (通过 instructions 生效) | `.vscode/mcp.json` (`servers`) |
-| **CodeBuddy** | `.codebuddy/rules/*.mdc` | — (通过 rules 生效) | `.mcp.json` (`mcpServers`) |
-| **Trae** | `.trae/rules/*.md` | `.trae/rules/<id>.md` | `.trae/mcp.json` (`mcpServers`) |
+| ------ | ----- | ------ | --- |
+| **Cursor** | `.cursor/rules/*.mdc` | —（通过 rules 生效） | `.cursor/mcp.json`（`mcpServers`） |
+| **Claude Code** | `.claude/rules/*.md` | `.claude/skills/<id>/SKILL.md` | `.mcp.json`（`mcpServers`） |
+| **VS Code + Copilot** | `.github/copilot-instructions.md` | —（通过 instructions 生效） | `.vscode/mcp.json`（`servers`） |
+| **CodeBuddy CN** | `.codebuddy/rules/*.mdc` | —（通过 rules 生效） | `.mcp.json`（`mcpServers`） |
+| **Trae** | `.trae/rules/*.md` | `.trae/rules/<id>.md` | `.trae/mcp.json`（`mcpServers`） |
+| **IDEA** | `.idea/fe-kit/rules/*.md` | —（占位集成） | —（占位集成） |
 
-`.fe-kit/` 目录仍用于存储 fe-kit 内部元数据（`project.json` 等），但不再作为编辑器配置的输出目标。
+`.fe-kit/` 目录仍用于存储 fe-kit 内部元数据（`project.json`、`skills.json`、`mcp.json`、`tools.json` 等），但不再作为编辑器配置的输出目标。
 
 ## 环境要求
 
@@ -38,6 +39,133 @@
 
 首次发包前需在 npm 登录：`npm login`（或 `pnpm publish` 使用的同一 npm 身份）。
 
+## 安装与运行
+
+发布包名为 `fe-kit-cli`，命令名为 `fe-kit`。
+
+直接全局安装：
+
+```bash
+pnpm add -g fe-kit-cli
+fe-kit --help
+```
+
+在仓库里本地运行：
+
+```bash
+pnpm install
+pnpm run build
+node dist/cli.mjs --help
+```
+
+本地 link 成全局命令：
+
+```bash
+pnpm run build
+pnpm link --global
+fe-kit --help
+
+# 用完可执行
+pnpm unlink --global fe-kit-cli
+```
+
+当前 CLI 帮助输出如下：
+
+```text
+Usage: fe-kit [options] [command]
+
+Frontend project scaffold CLI — init, enhance, and manage your dev environment.
+
+Options:
+  -V, --version   output the version number
+  -h, --help      display help for command
+
+Commands:
+  init            Initialize a new frontend project with Vue or React + TypeScript
+  enhance         Enhance an existing frontend project with dev tools, skills, MCP, and rules
+  help [command]  display help for command
+```
+
+## 使用说明
+
+### 1. 初始化新项目
+
+在任意目录运行：
+
+```bash
+fe-kit init
+```
+
+`init` 会按顺序询问这些信息：
+
+1. 项目名与目标路径。
+2. 前端框架：`vue` 或 `react`。
+3. 路由方案：Vue 固定为 `vue-router`，React 固定为 `react-router`。
+4. 状态管理：Vue 可选 `pinia`、`vuex`；React 可选 `redux-toolkit`、`zustand`、`mobx`。
+5. 构建工具：`vite`、`webpack`、`rspack`。
+6. 代码质量工具：当前默认全选 `eslint`、`stylelint`、`prettier`、`editorconfig`。
+7. 开发工具适配：`cursor`、`claude-code`、`vscode`、`codebuddy-cn`、`trae`、`idea`。
+8. 内置 Skills。
+9. MCP 服务。
+
+执行完成后，CLI 会：
+
+1. 生成对应模板项目。
+2. 写入 lint/format 相关配置。
+3. 生成项目 README。
+4. 写入 `.fe-kit/` 元数据。
+5. 按所选工具写入 rules、skills、MCP 配置。
+
+### 2. 增强已有项目
+
+进入已有项目根目录后运行：
+
+```bash
+fe-kit enhance
+```
+
+`enhance` 要求当前目录至少存在 `package.json`。执行时会先自动识别：
+
+1. 项目名。
+2. 框架与构建工具。
+3. 是否存在 TypeScript。
+4. 是否已经初始化 Git。
+
+随后进入交互选择：
+
+1. 要写入配置的开发工具。
+2. 要安装/配置的质量工具。
+3. 要补充的 Skills。
+4. 要补充的 MCP 服务。
+
+当前默认勾选策略与 `init` 不同：
+
+1. 默认选中 `eslint`、`prettier`、`editorconfig`。
+2. `stylelint` 默认不选。
+3. `commitlint` 默认不选。
+
+执行完成后，CLI 会在保留现有项目基础上更新 `.fe-kit/` 元数据，并把新增配置合并到对应工具目录。
+
+### 3. 内置能力范围
+
+当前脚手架内置的主要选择项如下：
+
+1. 框架：`vue`、`react`。
+2. 构建工具：`vite`、`webpack`、`rspack`。
+3. 开发工具：`cursor`、`claude-code`、`vscode`、`codebuddy-cn`、`trae`、`idea`。
+4. MCP：`context7`、`sequential-thinking`、`filesystem`、`exa-search`。
+5. Skills：从 `src/skills/` 目录动态加载，当前内置包括前端设计、TDD、Vue 最佳实践、调试、验证等多类模板。
+
+### 4. 输出结果怎么看
+
+执行 `init` 或 `enhance` 后，建议优先检查这些位置：
+
+1. `.fe-kit/project.json`：项目基础元数据。
+2. `.fe-kit/skills.json`：启用的内置技能记录。
+3. `.fe-kit/mcp.json`：MCP 记录与适配状态。
+4. `.fe-kit/tools.json`：选中的开发工具记录。
+5. 对应编辑器目录：例如 `.cursor/`、`.claude/`、`.vscode/`、`.github/`、`.trae/`、`.idea/fe-kit/`。
+
 ## 开发与构建
 
 ```bash
@@ -47,27 +175,12 @@ pnpm run dev      # tsup watch
 pnpm run typecheck
 ```
 
-全局或本地执行：
-
-```bash
-node dist/cli.mjs --help
-```
-
-本地全局命令执行
-```bash
-pnpm run build
-pnpm link --global
-fe-kit --help
-
-#（用完可 pnpm unlink --global fe-kit 清理）
-```
-
 ## 命令
 
 | 命令 | 说明 |
-|------|------|
+| ---- | ---- |
 | `init` | 交互式初始化 Vue 或 React + TypeScript 项目 |
-| `enhance` | 在已有前端项目中叠加开发工具、skills、MCP、规则等 |
+| `enhance` | 在已有前端项目中叠加开发工具、Skills、MCP、规则等 |
 
 ## 仓库结构（节选）
 
