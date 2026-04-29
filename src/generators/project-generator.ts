@@ -11,7 +11,7 @@ function templateDir(framework: string, bundler: string): string {
 }
 
 export async function generateProject(answers: InitAnswers): Promise<void> {
-  const { projectPath, projectName, framework, bundler, router, stateManagement } = answers;
+  const { projectPath, projectName, framework, bundler, router, stateManagement, lintTools } = answers;
 
   await fs.ensureDir(projectPath);
 
@@ -24,42 +24,30 @@ export async function generateProject(answers: InitAnswers): Promise<void> {
     await generateMinimalProject(answers);
   }
 
-  await patchPackageJson(projectPath, projectName, framework, bundler, router, stateManagement);
+  await patchPackageJson(projectPath, projectName, framework, bundler, router, stateManagement, lintTools);
   logger.success('package.json configured');
 
   await ensureNextStyleScaffold(projectPath, framework);
 }
 
 async function ensureNextStyleScaffold(projectPath: string, framework: InitAnswers['framework']): Promise<void> {
-  // Next.js-like organization (no service/api). Keep it additive to avoid breaking existing templates.
   const dirs = [
     path.join(projectPath, 'public'),
-    path.join(projectPath, 'src', 'app'),
-    path.join(projectPath, 'src', 'components'),
-    path.join(projectPath, 'src', 'hooks'),
-    path.join(projectPath, 'src', 'lib'),
-    path.join(projectPath, 'src', 'styles'),
   ];
 
   await Promise.all(dirs.map((d) => fs.ensureDir(d)));
 
-  // Minimal placeholders to make folders visible in git and IDEs.
   const keepFiles = [
-    path.join(projectPath, 'src', 'app', '.gitkeep'),
-    path.join(projectPath, 'src', 'components', '.gitkeep'),
-    path.join(projectPath, 'src', 'hooks', '.gitkeep'),
-    path.join(projectPath, 'src', 'lib', '.gitkeep'),
-    path.join(projectPath, 'src', 'styles', '.gitkeep'),
     path.join(projectPath, 'public', '.gitkeep'),
   ];
   await Promise.all(keepFiles.map((p) => fs.ensureFile(p)));
 
-  // Framework-specific convention hints (purely additive).
   if (framework === 'vue') {
-    await fs.ensureFile(path.join(projectPath, 'src', 'hooks', 'README.md'));
+    await fs.ensureDir(path.join(projectPath, 'src', 'composables'));
+    await fs.ensureFile(path.join(projectPath, 'src', 'composables', 'README.md'));
     await fs.writeFile(
-      path.join(projectPath, 'src', 'hooks', 'README.md'),
-      ['# hooks/', '', 'Vue 项目里这里更常放 `composables/`（可按团队习惯重命名）。', ''].join('\n'),
+      path.join(projectPath, 'src', 'composables', 'README.md'),
+      ['# composables/', '', 'Vue 项目里这里更常放 composables。', ''].join('\n'),
       'utf-8',
     );
   }
@@ -230,6 +218,7 @@ async function patchPackageJson(
   bundler: string,
   router: string,
   stateManagement: string,
+  lintTools: InitAnswers['lintTools'],
 ): Promise<void> {
   const pkgPath = path.join(projectPath, 'package.json');
   const existing = (await fs.pathExists(pkgPath))
@@ -287,6 +276,12 @@ async function patchPackageJson(
   } else if (bundler === 'rspack') {
     scripts.dev = 'rspack serve';
     scripts.build = 'rspack build';
+  }
+
+  scripts.typecheck ??= 'tsc --noEmit';
+  scripts.test ??= 'node --test ./tests/**/*.test.mjs';
+  if (lintTools.includes('eslint')) {
+    scripts.lint ??= 'eslint .';
   }
 
   const pkg = {

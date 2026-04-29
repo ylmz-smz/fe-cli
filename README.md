@@ -107,10 +107,14 @@ fe-kit init
 7. 开发工具适配：`cursor`、`claude-code`、`vscode`、`codebuddy-cn`、`trae`、`idea`。
 8. 内置 Skills。
 9. MCP 服务。
+10. 可选的 feature domains（逗号分隔），用于生成 feature slice 目录骨架。
 
 执行完成后，CLI 会：
 
 1. 生成对应模板项目。
+2. 按 bootstrap conventions 生成 `src/core`、`src/features`、`docs`、`plan` 等目录骨架。
+3. 写入 `docs/bootstrap/` 下的 checklist、prompt 和脚手架说明。
+4. 生成项目级 `.github/copilot-instructions.md` 基础约束。
 2. 写入 lint/format 相关配置。
 3. 生成项目 README。
 4. 写入 `.fe-kit/` 元数据。

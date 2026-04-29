@@ -45,5 +45,7 @@ export default defineConfig({
     copyDirSync('src/templates', 'dist/templates');
     copyDirSync('src/rules', 'dist/rules');
     copySkillDirs('src/skills', 'dist/skills');
+    copyDirSync('project-bootstrap-conventions', 'dist/project-bootstrap-conventions');
+    copyDirSync('prompts', 'dist/prompts');
   },
 });

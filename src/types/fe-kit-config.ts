@@ -10,6 +10,7 @@ export interface ProjectMeta {
   router: string;
   stateManagement: string;
   bundler: Bundler;
+  featureDomains: string[];
   typescript: true;
   lintTools: LintTool[];
   templateVersion: string;

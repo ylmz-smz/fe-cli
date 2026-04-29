@@ -7,6 +7,7 @@ import { DEV_TOOLS } from '../constants/tools.js';
 import { LINT_TOOLS } from '../constants/lint.js';
 import { getSkillCatalog } from '../skills/catalog.js';
 import { getMcpCatalog } from '../mcp/catalog.js';
+import { normalizeFeatureDomains } from '../generators/bootstrap-generator.js';
 
 
 export async function runInitPrompts(): Promise<InitAnswers | null> {
@@ -96,11 +97,21 @@ export async function runInitPrompts(): Promise<InitAnswers | null> {
           selected: false,
         })),
       },
+      {
+        type: 'text',
+        name: 'featureDomainsRaw',
+        message: 'Feature domains (comma-separated, optional):',
+        hint: 'Example: auth, dashboard, reporting',
+        initial: '',
+      },
     ],
     { onCancel: () => process.exit(0) },
   );
 
   if (!response.projectName) return null;
 
-  return response as InitAnswers;
+  return {
+    ...(response as Omit<InitAnswers, 'featureDomains'>),
+    featureDomains: normalizeFeatureDomains(response.featureDomainsRaw),
+  };
 }

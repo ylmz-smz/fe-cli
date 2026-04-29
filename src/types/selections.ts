@@ -14,6 +14,7 @@ export interface InitAnswers {
   devTools: DevToolId[];
   skills: string[];
   mcpServers: string[];
+  featureDomains: string[];
 }
 
 export interface EnhanceAnswers {

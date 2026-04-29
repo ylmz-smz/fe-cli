@@ -139,12 +139,19 @@ export async function writeCopilotInstructions(
   const dir = path.join(projectRoot, '.github');
   await fs.ensureDir(dir);
 
-  const sections = rules.map((r) => r.content);
-  const body = [
-    '# Project Coding Guidelines',
-    '',
-    ...sections.flatMap((s) => [s, '']),
-  ].join('\n');
+  const instructionsPath = path.join(dir, 'copilot-instructions.md');
+  const existing = (await fs.pathExists(instructionsPath))
+    ? (await fs.readFile(instructionsPath, 'utf-8')).trimEnd()
+    : '# Project Coding Guidelines';
 
-  await fs.writeFile(path.join(dir, 'copilot-instructions.md'), body, 'utf-8');
+  const rulesBlock = [
+    '## Framework Rules',
+    '',
+    ...rules.flatMap((rule) => [rule.content, '']),
+  ].join('\n').trimEnd();
+
+  const baseWithoutRules = existing.replace(/\n+## Framework Rules[\s\S]*$/, '').trimEnd();
+  const body = [baseWithoutRules, '', rulesBlock, ''].join('\n');
+
+  await fs.writeFile(instructionsPath, body, 'utf-8');
 }
