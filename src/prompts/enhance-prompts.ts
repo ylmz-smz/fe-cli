@@ -6,6 +6,7 @@ import type { QualityTool } from '../constants/lint.js';
 import { DEV_TOOLS } from '../constants/tools.js';
 import { getSkillCatalog } from '../skills/catalog.js';
 import { getMcpCatalog } from '../mcp/catalog.js';
+import type { EnhancePromptDefaults } from '../core/resolve-enhance-defaults.js';
 
 
 interface QualityToolOption {
@@ -60,9 +61,18 @@ function getApplicableTools(stack: StackDetection): QualityToolOption[] {
 
 export async function runEnhancePrompts(
   stack: StackDetection,
+  defaults?: EnhancePromptDefaults,
 ): Promise<EnhanceAnswers | null> {
   const stackLabel = summarizeStack(stack);
   const applicableTools = getApplicableTools(stack);
+  const hasSavedDefaults = defaults?.hasSavedDevTools ?? false;
+  const defaultDevTools = defaults?.devTools ?? [];
+  const hasSavedQualityDefaults = defaults?.hasSavedQualityTools ?? false;
+  const defaultQualityTools = new Set(defaults?.qualityTools ?? []);
+  const hasSavedSkillDefaults = defaults?.hasSavedSkills ?? false;
+  const defaultSkills = new Set(defaults?.skills ?? []);
+  const hasSavedMcpDefaults = defaults?.hasSavedMcpServers ?? false;
+  const defaultMcpServers = new Set(defaults?.mcpServers ?? []);
 
   const response = await prompts(
     [
@@ -70,7 +80,11 @@ export async function runEnhancePrompts(
         type: 'multiselect',
         name: 'devTools',
         message: `Dev tools to configure for this ${stackLabel} project:`,
-        choices: DEV_TOOLS.map((t) => ({ title: t, value: t, selected: t === 'cursor' })),
+        choices: DEV_TOOLS.map((t) => ({
+          title: t,
+          value: t,
+          selected: hasSavedDefaults ? defaultDevTools.includes(t) : t === 'cursor',
+        })),
         min: 1,
         hint: 'Select at least one',
       },
@@ -81,7 +95,7 @@ export async function runEnhancePrompts(
         choices: applicableTools.map((t) => ({
           title: `${t.label} — ${t.description}`,
           value: t.id,
-          selected: t.selected,
+          selected: hasSavedQualityDefaults ? defaultQualityTools.has(t.id) : t.selected,
         })),
         hint: 'Space to toggle, Enter to confirm',
       },
@@ -93,7 +107,7 @@ export async function runEnhancePrompts(
           title: s.label,
           description: s.description,
           value: s.id,
-          selected: false,
+          selected: hasSavedSkillDefaults ? defaultSkills.has(s.id) : false,
         })),
       },
       {
@@ -104,7 +118,7 @@ export async function runEnhancePrompts(
           title: m.label,
           description: m.description,
           value: m.id,
-          selected: false,
+          selected: hasSavedMcpDefaults ? defaultMcpServers.has(m.id) : false,
         })),
       },
     ],

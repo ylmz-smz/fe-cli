@@ -83,6 +83,7 @@ export async function generateReadme(answers: InitAnswers): Promise<void> {
     '',
     '- **目录骨架已对齐 bootstrap 约束**：默认生成 `src/core`、`src/features`、`docs`、`plan` 等稳定目录。',
     '- **docs/bootstrap/**：包含初始化 checklist、bootstrap prompt 和脚手架说明，便于后续继续扩展。',
+    '- **部分空目录会带 `.gitkeep`**：这是为了让 Git 保留初始化骨架；如果目录后续已有真实文件，或你不需要保留空目录，可以直接删除这些 `.gitkeep`。',
     '',
   ].join('\n');
 

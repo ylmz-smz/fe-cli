@@ -5,6 +5,7 @@ import type { ProjectDetection } from '../core/detect-project.js';
 import { detectStack, summarizeStack } from '../core/detect-stack.js';
 import type { StackDetection } from '../core/detect-stack.js';
 import { runEnhancePrompts } from '../prompts/enhance-prompts.js';
+import { resolveEnhanceDefaults } from '../core/resolve-enhance-defaults.js';
 import { updateFeKitMeta } from '../generators/fe-kit-meta-generator.js';
 import { generateQualityTooling } from '../generators/quality-generator.js';
 import { applyAdapters } from '../core/apply-adapters.js';
@@ -31,7 +32,8 @@ export async function enhanceCommand(): Promise<void> {
 
   logger.info(`Detected: ${summarizeStack(stack)}`);
 
-  const answers = await runEnhancePrompts(stack);
+  const defaults = await resolveEnhanceDefaults(projectRoot);
+  const answers = await runEnhancePrompts(stack, defaults);
   if (!answers) return;
 
   await updateFeKitMeta(projectRoot, classicDetection ?? stack, answers);

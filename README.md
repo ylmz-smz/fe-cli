@@ -113,12 +113,13 @@ fe-kit init
 
 1. 生成对应模板项目。
 2. 按 bootstrap conventions 生成 `src/core`、`src/features`、`docs`、`plan` 等目录骨架。
-3. 写入 `docs/bootstrap/` 下的 checklist、prompt 和脚手架说明。
-4. 生成项目级 `.github/copilot-instructions.md` 基础约束。
-2. 写入 lint/format 相关配置。
-3. 生成项目 README。
-4. 写入 `.fe-kit/` 元数据。
-5. 按所选工具写入 rules、skills、MCP 配置。
+3. 为部分空目录写入 `.gitkeep`，用于保留目录结构；当目录已有真实文件，或你不想保留空目录时，这些 `.gitkeep` 可以直接删除。
+4. 写入 `docs/bootstrap/` 下的 checklist、prompt 和脚手架说明。
+5. 生成项目级 `.github/copilot-instructions.md` 基础约束。
+6. 写入 lint/format 相关配置。
+7. 生成项目 README。
+8. 写入 `.fe-kit/` 元数据。
+9. 按所选工具写入 rules、skills、MCP 配置。
 
 ### 2. 增强已有项目
 
