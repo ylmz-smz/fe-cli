@@ -6,12 +6,14 @@ import { detectStack, summarizeStack } from '../core/detect-stack.js';
 import type { StackDetection } from '../core/detect-stack.js';
 import { runEnhancePrompts } from '../prompts/enhance-prompts.js';
 import { resolveEnhanceDefaults } from '../core/resolve-enhance-defaults.js';
+import { normalizeEnhanceCommandOptions } from '../core/cli-options.js';
+import type { EnhanceCommandOptions } from '../core/cli-options.js';
 import { updateFeKitMeta } from '../generators/fe-kit-meta-generator.js';
 import { generateQualityTooling } from '../generators/quality-generator.js';
 import { applyAdapters } from '../core/apply-adapters.js';
 import { logger } from '../utils/index.js';
 
-export async function enhanceCommand(): Promise<void> {
+export async function enhanceCommand(options: EnhanceCommandOptions = {}): Promise<void> {
   logger.step('Analyzing current project...');
 
   const projectRoot = process.cwd();
@@ -32,8 +34,9 @@ export async function enhanceCommand(): Promise<void> {
 
   logger.info(`Detected: ${summarizeStack(stack)}`);
 
+  const normalized = normalizeEnhanceCommandOptions(options);
   const defaults = await resolveEnhanceDefaults(projectRoot);
-  const answers = await runEnhancePrompts(stack, defaults);
+  const answers = await runEnhancePrompts(stack, defaults, normalized);
   if (!answers) return;
 
   await updateFeKitMeta(projectRoot, classicDetection ?? stack, answers);

@@ -19,7 +19,9 @@ function titleCase(value: string): string {
 }
 
 function uiRuntimeLabel(framework: InitAnswers['framework']): string {
-  return framework === 'react' ? 'React' : 'Vue 3';
+  if (framework === 'react') return 'React';
+  if (framework === 'next') return 'Next.js';
+  return 'Vue 3';
 }
 
 function commandValue(command: 'dev' | 'typecheck' | 'lint' | 'test'): string {

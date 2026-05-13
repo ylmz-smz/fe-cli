@@ -1,6 +1,6 @@
-import { defineConfig } from '@rspack/cli';
+const { defineConfig } = require('@rspack/cli');
 
-export default defineConfig({
+module.exports = defineConfig({
   entry: { main: './src/main.tsx' },
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.jsx'],
@@ -8,7 +8,8 @@ export default defineConfig({
   module: {
     rules: [
       {
-        test: /\.tsx?$/,
+        test: /\.[jt]sx?$/,
+        exclude: /node_modules/,
         loader: 'builtin:swc-loader',
         options: {
           jsc: {
@@ -16,7 +17,6 @@ export default defineConfig({
             transform: { react: { runtime: 'automatic' } },
           },
         },
-        type: 'javascript/auto',
       },
     ],
   },

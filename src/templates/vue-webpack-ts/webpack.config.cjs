@@ -1,8 +1,8 @@
-import path from 'path';
-import HtmlWebpackPlugin from 'html-webpack-plugin';
-import { VueLoaderPlugin } from 'vue-loader';
+const path = require('node:path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const { VueLoaderPlugin } = require('vue-loader');
 
-export default {
+module.exports = {
   mode: 'development',
   entry: './src/main.ts',
   output: {
@@ -17,7 +17,14 @@ export default {
   module: {
     rules: [
       { test: /\.vue$/, loader: 'vue-loader' },
-      { test: /\.ts$/, loader: 'ts-loader', options: { appendTsSuffixTo: [/\.vue$/] } },
+      {
+        test: /\.ts$/,
+        loader: 'ts-loader',
+        options: {
+          appendTsSuffixTo: [/\.vue$/],
+          transpileOnly: true,
+        },
+      },
       { test: /\.css$/, use: ['style-loader', 'css-loader'] },
     ],
   },

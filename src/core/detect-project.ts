@@ -41,6 +41,7 @@ export async function detectProject(
 }
 
 function detectFramework(deps: Record<string, string>): Framework | null {
+  if ('next' in deps) return 'next';
   if ('vue' in deps) return 'vue';
   if ('react' in deps) return 'react';
   return null;
@@ -50,6 +51,7 @@ function detectRouter(deps: Record<string, string>, fw: Framework): string | und
   if (fw === 'vue' && 'vue-router' in deps) return 'vue-router';
   if (fw === 'react' && 'react-router' in deps) return 'react-router';
   if (fw === 'react' && 'react-router-dom' in deps) return 'react-router';
+  if (fw === 'next') return 'next-app-router';
   return undefined;
 }
 
@@ -63,10 +65,15 @@ function detectStateManagement(deps: Record<string, string>, fw: Framework): str
     if ('zustand' in deps) return 'zustand';
     if ('mobx' in deps) return 'mobx';
   }
+  if (fw === 'next') {
+    if ('@reduxjs/toolkit' in deps) return 'redux-toolkit';
+    if ('zustand' in deps) return 'zustand';
+  }
   return undefined;
 }
 
 function detectBundler(deps: Record<string, string>): Bundler | undefined {
+  if ('next' in deps) return 'next';
   if ('vite' in deps) return 'vite';
   if ('webpack' in deps) return 'webpack';
   if ('@rspack/cli' in deps || '@rspack/core' in deps) return 'rspack';

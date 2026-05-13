@@ -1,7 +1,7 @@
-import path from 'path';
-import HtmlWebpackPlugin from 'html-webpack-plugin';
+const path = require('node:path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
-export default {
+module.exports = {
   mode: 'development',
   entry: './src/main.tsx',
   output: {

@@ -1,0 +1,552 @@
+
+> fe-kit-cli@0.0.8 test:smoke:templates /Users/yuanlimingzi/work/fe-cli
+> node scripts/smoke-templates.mjs
+
+
+=== Smoke: react-vite ===
+→ Starting new project initialization...
+✔ Template react-vite-ts copied
+✔ package.json configured
+✔ Bootstrap conventions written to docs/bootstrap and .github/
+✔ ESLint 9 flat config generated
+✔ Prettier config generated
+✔ Rules for react written to .fe-kit/rules/
+✔ .fe-kit/ metadata written
+✔ README.md generated
+→ Applying config for vscode...
+✔ VS Code: extensions.json + .github/copilot-instructions.md updated
+✔ Project "smoke-react-vite" created at /var/folders/d6/csv1tvn17x3_xvv82fcgx_bh0000gn/T/fe-kit-smoke-react-vite-KuixKh/app
+Progress: resolved 1, reused 0, downloaded 0, added 0
+Progress: resolved 11, reused 11, downloaded 0, added 0
+Progress: resolved 18, reused 18, downloaded 0, added 0
+Progress: resolved 19, reused 18, downloaded 0, added 0
+Progress: resolved 34, reused 34, downloaded 0, added 0
+Progress: resolved 87, reused 63, downloaded 0, added 0
+Progress: resolved 106, reused 82, downloaded 0, added 0
+Progress: resolved 114, reused 90, downloaded 0, added 0
+Progress: resolved 125, reused 101, downloaded 0, added 0
+Progress: resolved 144, reused 120, downloaded 0, added 0
+Progress: resolved 151, reused 127, downloaded 0, added 0
+Progress: resolved 164, reused 140, downloaded 0, added 0
+Progress: resolved 166, reused 142, downloaded 0, added 0
+Packages: +138
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Progress: resolved 168, reused 144, downloaded 0, added 125
+Progress: resolved 168, reused 144, downloaded 0, added 138, done
+
+dependencies:
++ react 19.2.6
++ react-dom 19.2.6
++ react-router-dom 7.15.0
++ zustand 5.0.13
+
+devDependencies:
++ @eslint/js 9.39.4 (10.0.1 is available)
++ @types/react 19.2.14
++ @types/react-dom 19.2.3
++ @vitejs/plugin-react 6.0.1
++ eslint 9.39.4 (10.3.0 is available)
++ eslint-plugin-react-hooks 5.2.0 (7.1.1 is available)
++ eslint-plugin-react-refresh 0.4.26 (0.5.2 is available)
++ globals 16.5.0 (17.6.0 is available)
++ prettier 3.8.3
++ typescript 5.9.3 (6.0.3 is available)
++ typescript-eslint 8.59.3
++ vite 8.0.12
+
+Done in 15s using pnpm v9.15.9
+
+> smoke-react-vite@0.1.0 typecheck /private/var/folders/d6/csv1tvn17x3_xvv82fcgx_bh0000gn/T/fe-kit-smoke-react-vite-KuixKh/app
+> tsc --noEmit
+
+
+> smoke-react-vite@0.1.0 build /private/var/folders/d6/csv1tvn17x3_xvv82fcgx_bh0000gn/T/fe-kit-smoke-react-vite-KuixKh/app
+> vite build
+
+vite v8.0.12 building client environment for production...
+[2Ktransforming...✓ 15 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                  0.31 kB │ gzip:  0.23 kB
+dist/assets/index-CWheVrp5.js  190.94 kB │ gzip: 60.22 kB
+
+✓ built in 78ms
+PASS react-vite
+
+=== Smoke: react-webpack ===
+→ Starting new project initialization...
+✔ Template react-webpack-ts copied
+✔ package.json configured
+✔ Bootstrap conventions written to docs/bootstrap and .github/
+✔ ESLint 9 flat config generated
+✔ Prettier config generated
+✔ Rules for react written to .fe-kit/rules/
+✔ .fe-kit/ metadata written
+✔ README.md generated
+→ Applying config for vscode...
+✔ VS Code: extensions.json + .github/copilot-instructions.md updated
+✔ Project "smoke-react-webpack" created at /var/folders/d6/csv1tvn17x3_xvv82fcgx_bh0000gn/T/fe-kit-smoke-react-webpack-zbyD14/app
+Progress: resolved 1, reused 0, downloaded 0, added 0
+Progress: resolved 15, reused 15, downloaded 0, added 0
+Progress: resolved 19, reused 19, downloaded 0, added 0
+Progress: resolved 21, reused 21, downloaded 0, added 0
+Progress: resolved 37, reused 37, downloaded 0, added 0
+Progress: resolved 40, reused 40, downloaded 0, added 0
+Progress: resolved 52, reused 52, downloaded 0, added 0
+Progress: resolved 68, reused 68, downloaded 0, added 0
+Progress: resolved 84, reused 84, downloaded 0, added 0
+Progress: resolved 97, reused 97, downloaded 0, added 0
+Progress: resolved 104, reused 104, downloaded 0, added 0
+Progress: resolved 122, reused 122, downloaded 0, added 0
+Progress: resolved 137, reused 137, downloaded 0, added 0
+Progress: resolved 164, reused 164, downloaded 0, added 0
+Progress: resolved 174, reused 174, downloaded 0, added 0
+Progress: resolved 182, reused 182, downloaded 0, added 0
+Progress: resolved 196, reused 196, downloaded 0, added 0
+Progress: resolved 210, reused 210, downloaded 0, added 0
+Progress: resolved 218, reused 218, downloaded 0, added 0
+Progress: resolved 236, reused 236, downloaded 0, added 0
+Progress: resolved 262, reused 262, downloaded 0, added 0
+Progress: resolved 277, reused 277, downloaded 0, added 0
+Progress: resolved 291, reused 291, downloaded 0, added 0
+Progress: resolved 301, reused 301, downloaded 0, added 0
+Progress: resolved 318, reused 318, downloaded 0, added 0
+Progress: resolved 342, reused 342, downloaded 0, added 0
+Progress: resolved 354, reused 354, downloaded 0, added 0
+Progress: resolved 368, reused 368, downloaded 0, added 0
+Progress: resolved 388, reused 388, downloaded 0, added 0
+Progress: resolved 402, reused 402, downloaded 0, added 0
+Progress: resolved 414, reused 414, downloaded 0, added 0
+Progress: resolved 430, reused 430, downloaded 0, added 0
+Progress: resolved 451, reused 451, downloaded 0, added 0
+Progress: resolved 463, reused 463, downloaded 0, added 0
+Progress: resolved 472, reused 472, downloaded 0, added 0
+Progress: resolved 479, reused 479, downloaded 0, added 0
+ WARN  1 deprecated subdependencies found: uuid@8.3.2
+Packages: +480
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Progress: resolved 480, reused 480, downloaded 0, added 94
+Progress: resolved 480, reused 480, downloaded 0, added 412
+Progress: resolved 480, reused 480, downloaded 0, added 480, done
+
+dependencies:
++ react 19.2.6
++ react-dom 19.2.6
++ react-router-dom 7.15.0
++ zustand 5.0.13
+
+devDependencies:
++ @eslint/js 9.39.4 (10.0.1 is available)
++ @types/react 19.2.14
++ @types/react-dom 19.2.3
++ css-loader 7.1.4
++ eslint 9.39.4 (10.3.0 is available)
++ eslint-plugin-react-hooks 5.2.0 (7.1.1 is available)
++ eslint-plugin-react-refresh 0.4.26 (0.5.2 is available)
++ globals 16.5.0 (17.6.0 is available)
++ html-webpack-plugin 5.6.7
++ prettier 3.8.3
++ style-loader 4.0.0
++ ts-loader 9.5.7
++ typescript 5.9.3 (6.0.3 is available)
++ typescript-eslint 8.59.3
++ webpack 5.106.2
++ webpack-cli 6.0.1 (7.0.2 is available)
++ webpack-dev-server 5.2.4
+
+Done in 39.1s using pnpm v9.15.9
+
+> smoke-react-webpack@0.1.0 typecheck /private/var/folders/d6/csv1tvn17x3_xvv82fcgx_bh0000gn/T/fe-kit-smoke-react-webpack-zbyD14/app
+> tsc --noEmit
+
+
+> smoke-react-webpack@0.1.0 build /private/var/folders/d6/csv1tvn17x3_xvv82fcgx_bh0000gn/T/fe-kit-smoke-react-webpack-zbyD14/app
+> webpack --config webpack.config.cjs --mode production
+
+asset bundle.js 186 KiB [emitted] [minimized] (name: main) 1 related asset
+asset index.html 266 bytes [emitted]
+orphan modules 152 bytes [orphan] 1 module
+modules by path ./node_modules/.pnpm/ 561 KiB
+  modules by path ./node_modules/.pnpm/react@19.2.6/node_modules/react/ 18.2 KiB
+    modules by path ./node_modules/.pnpm/react@19.2.6/node_modules/react/*.js 396 bytes 2 modules
+    modules by path ./node_modules/.pnpm/react@19.2.6/node_modules/react/cjs/*.js 17.8 KiB 2 modules
+  modules by path ./node_modules/.pnpm/react-dom@19.2.6_react@19.2.6/node_modules/react-dom/ 533 KiB
+    modules by path ./node_modules/.pnpm/react-dom@19.2.6_react@19.2.6/node_modules/react-dom/*.js 2.67 KiB 2 modules
+    modules by path ./node_modules/.pnpm/react-dom@19.2.6_react@19.2.6/node_modules/reac...(truncated) 530 KiB 2 modules
+  modules by path ./node_modules/.pnpm/scheduler@0.27.0/node_modules/scheduler/ 10.1 KiB
+    ./node_modules/.pnpm/scheduler@0.27.0/node_modules/scheduler/index.js 194 bytes [built] [code generated]
+    ./node_modules/.pnpm/scheduler@0.27.0/node_modules/scheduler/cjs/scheduler...(truncated) 9.94 KiB [built] [code generated]
+./src/main.tsx + 1 modules 408 bytes [built] [code generated]
+webpack 5.106.2 compiled successfully in 1864 ms
+PASS react-webpack
+
+=== Smoke: react-rspack ===
+→ Starting new project initialization...
+✔ Template react-rspack-ts copied
+✔ package.json configured
+✔ Bootstrap conventions written to docs/bootstrap and .github/
+✔ ESLint 9 flat config generated
+✔ Prettier config generated
+✔ Rules for react written to .fe-kit/rules/
+✔ .fe-kit/ metadata written
+✔ README.md generated
+→ Applying config for vscode...
+✔ VS Code: extensions.json + .github/copilot-instructions.md updated
+✔ Project "smoke-react-rspack" created at /var/folders/d6/csv1tvn17x3_xvv82fcgx_bh0000gn/T/fe-kit-smoke-react-rspack-lLDbTs/app
+Progress: resolved 1, reused 0, downloaded 0, added 0
+Progress: resolved 7, reused 7, downloaded 0, added 0
+Progress: resolved 20, reused 20, downloaded 0, added 0
+Progress: resolved 24, reused 24, downloaded 0, added 0
+Progress: resolved 36, reused 36, downloaded 0, added 0
+Progress: resolved 69, reused 60, downloaded 0, added 0
+Progress: resolved 94, reused 85, downloaded 0, added 0
+Progress: resolved 101, reused 92, downloaded 0, added 0
+Progress: resolved 113, reused 104, downloaded 0, added 0
+Progress: resolved 132, reused 123, downloaded 0, added 0
+Progress: resolved 140, reused 131, downloaded 0, added 0
+Progress: resolved 156, reused 147, downloaded 0, added 0
+Progress: resolved 166, reused 157, downloaded 0, added 0
+Progress: resolved 181, reused 172, downloaded 0, added 0
+Progress: resolved 184, reused 175, downloaded 0, added 0
+Progress: resolved 197, reused 188, downloaded 0, added 0
+Progress: resolved 208, reused 199, downloaded 0, added 0
+Progress: resolved 224, reused 215, downloaded 0, added 0
+Progress: resolved 242, reused 233, downloaded 0, added 0
+Progress: resolved 257, reused 248, downloaded 0, added 0
+Progress: resolved 268, reused 259, downloaded 0, added 0
+Progress: resolved 282, reused 273, downloaded 0, added 0
+Progress: resolved 311, reused 302, downloaded 0, added 0
+Progress: resolved 325, reused 316, downloaded 0, added 0
+Progress: resolved 328, reused 319, downloaded 0, added 0
+Progress: resolved 348, reused 339, downloaded 0, added 0
+Progress: resolved 362, reused 353, downloaded 0, added 0
+Progress: resolved 366, reused 357, downloaded 0, added 0
+Progress: resolved 371, reused 362, downloaded 0, added 0
+ WARN  1 deprecated subdependencies found: uuid@8.3.2
+Packages: +358
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Progress: resolved 372, reused 363, downloaded 0, added 205
+Progress: resolved 372, reused 363, downloaded 0, added 358, done
+
+dependencies:
++ react 19.2.6
++ react-dom 19.2.6
++ react-router-dom 7.15.0
++ zustand 5.0.13
+
+devDependencies:
++ @eslint/js 9.39.4 (10.0.1 is available)
++ @rspack/cli 1.7.11 (2.0.3 is available)
++ @rspack/core 1.7.11 (2.0.3 is available)
++ @types/react 19.2.14
++ @types/react-dom 19.2.3
++ eslint 9.39.4 (10.3.0 is available)
++ eslint-plugin-react-hooks 5.2.0 (7.1.1 is available)
++ eslint-plugin-react-refresh 0.4.26 (0.5.2 is available)
++ globals 16.5.0 (17.6.0 is available)
++ prettier 3.8.3
++ typescript 5.9.3 (6.0.3 is available)
++ typescript-eslint 8.59.3
+
+Done in 31.4s using pnpm v9.15.9
+
+> smoke-react-rspack@0.1.0 typecheck /private/var/folders/d6/csv1tvn17x3_xvv82fcgx_bh0000gn/T/fe-kit-smoke-react-rspack-lLDbTs/app
+> tsc --noEmit
+
+
+> smoke-react-rspack@0.1.0 build /private/var/folders/d6/csv1tvn17x3_xvv82fcgx_bh0000gn/T/fe-kit-smoke-react-rspack-lLDbTs/app
+> rspack build --config rspack.config.cjs
+
+Rspack compiled successfully in 130 ms
+PASS react-rspack
+
+=== Smoke: vue-vite ===
+→ Starting new project initialization...
+✔ Template vue-vite-ts copied
+✔ package.json configured
+✔ Bootstrap conventions written to docs/bootstrap and .github/
+✔ ESLint 9 flat config generated
+✔ Prettier config generated
+✔ Rules for vue written to .fe-kit/rules/
+✔ .fe-kit/ metadata written
+✔ README.md generated
+→ Applying config for vscode...
+✔ VS Code: extensions.json + .github/copilot-instructions.md updated
+✔ Project "smoke-vue-vite" created at /var/folders/d6/csv1tvn17x3_xvv82fcgx_bh0000gn/T/fe-kit-smoke-vue-vite-IyUp8f/app
+Progress: resolved 1, reused 0, downloaded 0, added 0
+Progress: resolved 18, reused 17, downloaded 0, added 0
+Progress: resolved 19, reused 19, downloaded 0, added 0
+Progress: resolved 35, reused 35, downloaded 0, added 0
+Progress: resolved 59, reused 59, downloaded 0, added 0
+Progress: resolved 101, reused 76, downloaded 0, added 0
+Progress: resolved 119, reused 95, downloaded 0, added 0
+Progress: resolved 128, reused 104, downloaded 0, added 0
+Progress: resolved 143, reused 119, downloaded 0, added 0
+Progress: resolved 166, reused 142, downloaded 0, added 0
+Progress: resolved 175, reused 151, downloaded 0, added 0
+Progress: resolved 182, reused 158, downloaded 0, added 0
+Progress: resolved 195, reused 171, downloaded 0, added 0
+Progress: resolved 197, reused 173, downloaded 0, added 0
+Progress: resolved 198, reused 173, downloaded 0, added 0
+Progress: resolved 200, reused 176, downloaded 0, added 0
+Packages: +171
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Progress: resolved 201, reused 177, downloaded 0, added 171, done
+
+dependencies:
++ pinia 2.3.1 (3.0.4 is available)
++ vue 3.5.34
++ vue-router 4.6.4 (5.0.7 is available)
+
+devDependencies:
++ @eslint/js 9.39.4 (10.0.1 is available)
++ @types/node 24.12.4 (25.7.0 is available)
++ @vitejs/plugin-vue 6.0.6
++ @vue/tsconfig 0.9.1
++ eslint 9.39.4 (10.3.0 is available)
++ eslint-plugin-vue 10.9.1
++ globals 16.5.0 (17.6.0 is available)
++ prettier 3.8.3
++ typescript 5.9.3 (6.0.3 is available)
++ typescript-eslint 8.59.3
++ vite 8.0.12
++ vue-tsc 3.2.8
+
+Done in 17.5s using pnpm v9.15.9
+
+> smoke-vue-vite@0.1.0 typecheck /private/var/folders/d6/csv1tvn17x3_xvv82fcgx_bh0000gn/T/fe-kit-smoke-vue-vite-IyUp8f/app
+> vue-tsc --noEmit
+
+
+> smoke-vue-vite@0.1.0 build /private/var/folders/d6/csv1tvn17x3_xvv82fcgx_bh0000gn/T/fe-kit-smoke-vue-vite-IyUp8f/app
+> vue-tsc -b && vite build
+
+vite v8.0.12 building client environment for production...
+[2Ktransforming...✓ 11 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                 0.30 kB │ gzip:  0.23 kB
+dist/assets/index-BY09crnv.js  59.37 kB │ gzip: 23.56 kB
+
+✓ built in 100ms
+PASS vue-vite
+
+=== Smoke: vue-webpack ===
+→ Starting new project initialization...
+✔ Template vue-webpack-ts copied
+✔ package.json configured
+✔ Bootstrap conventions written to docs/bootstrap and .github/
+✔ ESLint 9 flat config generated
+✔ Prettier config generated
+✔ Rules for vue written to .fe-kit/rules/
+✔ .fe-kit/ metadata written
+✔ README.md generated
+→ Applying config for vscode...
+✔ VS Code: extensions.json + .github/copilot-instructions.md updated
+✔ Project "smoke-vue-webpack" created at /var/folders/d6/csv1tvn17x3_xvv82fcgx_bh0000gn/T/fe-kit-smoke-vue-webpack-dNDSSY/app
+Progress: resolved 1, reused 0, downloaded 0, added 0
+Progress: resolved 16, reused 16, downloaded 0, added 0
+Progress: resolved 21, reused 21, downloaded 0, added 0
+Progress: resolved 31, reused 29, downloaded 0, added 0
+Progress: resolved 38, reused 38, downloaded 0, added 0
+Progress: resolved 54, reused 54, downloaded 0, added 0
+Progress: resolved 70, reused 70, downloaded 0, added 0
+Progress: resolved 80, reused 80, downloaded 0, added 0
+Progress: resolved 86, reused 86, downloaded 0, added 0
+Progress: resolved 87, reused 86, downloaded 0, added 0
+Progress: resolved 93, reused 93, downloaded 0, added 0
+Progress: resolved 94, reused 94, downloaded 0, added 0
+Progress: resolved 95, reused 95, downloaded 0, added 0
+Progress: resolved 96, reused 95, downloaded 0, added 0
+Progress: resolved 100, reused 100, downloaded 0, added 0
+Progress: resolved 111, reused 111, downloaded 0, added 0
+Progress: resolved 136, reused 136, downloaded 0, added 0
+Progress: resolved 150, reused 150, downloaded 0, added 0
+Progress: resolved 170, reused 170, downloaded 0, added 0
+Progress: resolved 184, reused 184, downloaded 0, added 0
+Progress: resolved 206, reused 206, downloaded 0, added 0
+Progress: resolved 222, reused 222, downloaded 0, added 0
+Progress: resolved 231, reused 231, downloaded 0, added 0
+Progress: resolved 251, reused 251, downloaded 0, added 0
+Progress: resolved 268, reused 268, downloaded 0, added 0
+Progress: resolved 282, reused 282, downloaded 0, added 0
+Progress: resolved 292, reused 292, downloaded 0, added 0
+Progress: resolved 309, reused 309, downloaded 0, added 0
+Progress: resolved 327, reused 327, downloaded 0, added 0
+Progress: resolved 344, reused 344, downloaded 0, added 0
+Progress: resolved 359, reused 359, downloaded 0, added 0
+Progress: resolved 383, reused 383, downloaded 0, added 0
+Progress: resolved 392, reused 392, downloaded 0, added 0
+Progress: resolved 405, reused 405, downloaded 0, added 0
+Progress: resolved 421, reused 421, downloaded 0, added 0
+Progress: resolved 438, reused 438, downloaded 0, added 0
+Progress: resolved 448, reused 448, downloaded 0, added 0
+Progress: resolved 466, reused 466, downloaded 0, added 0
+Progress: resolved 475, reused 475, downloaded 0, added 0
+Progress: resolved 493, reused 493, downloaded 0, added 0
+Progress: resolved 495, reused 495, downloaded 0, added 0
+Progress: resolved 502, reused 502, downloaded 0, added 0
+Progress: resolved 503, reused 503, downloaded 0, added 0
+Progress: resolved 506, reused 506, downloaded 0, added 0
+ WARN  1 deprecated subdependencies found: uuid@8.3.2
+Packages: +507
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Progress: resolved 507, reused 507, downloaded 0, added 18
+Progress: resolved 507, reused 507, downloaded 0, added 334
+Progress: resolved 507, reused 507, downloaded 0, added 507, done
+
+dependencies:
++ pinia 2.3.1 (3.0.4 is available)
++ vue 3.5.34
++ vue-router 4.6.4 (5.0.7 is available)
+
+devDependencies:
++ @eslint/js 9.39.4 (10.0.1 is available)
++ @types/node 24.12.4 (25.7.0 is available)
++ @vue/tsconfig 0.9.1
++ css-loader 7.1.4
++ eslint 9.39.4 (10.3.0 is available)
++ eslint-plugin-vue 10.9.1
++ globals 16.5.0 (17.6.0 is available)
++ html-webpack-plugin 5.6.7
++ prettier 3.8.3
++ style-loader 4.0.0
++ ts-loader 9.5.7
++ typescript 5.9.3 (6.0.3 is available)
++ typescript-eslint 8.59.3
++ vue-loader 17.4.2
++ vue-tsc 3.2.8
++ webpack 5.106.2
++ webpack-cli 6.0.1 (7.0.2 is available)
++ webpack-dev-server 5.2.4
+
+Done in 50.1s using pnpm v9.15.9
+
+> smoke-vue-webpack@0.1.0 typecheck /private/var/folders/d6/csv1tvn17x3_xvv82fcgx_bh0000gn/T/fe-kit-smoke-vue-webpack-dNDSSY/app
+> vue-tsc --noEmit
+
+
+> smoke-vue-webpack@0.1.0 build /private/var/folders/d6/csv1tvn17x3_xvv82fcgx_bh0000gn/T/fe-kit-smoke-vue-webpack-dNDSSY/app
+> webpack --config webpack.config.cjs --mode production
+
+assets by status 1.24 KiB [cached] 2 assets
+./src/main.ts 39 bytes [built] [code generated] [1 error]
+
+ERROR in ./src/main.ts
+Module build failed (from ./node_modules/.pnpm/ts-loader@9.5.7_typescript@5.9.3_webpack@5.106.2/node_modules/ts-loader/index.js):
+Error: TypeScript emitted no output for /private/var/folders/d6/csv1tvn17x3_xvv82fcgx_bh0000gn/T/fe-kit-smoke-vue-webpack-dNDSSY/app/src/main.ts.
+    at makeSourceMapAndFinish (/private/var/folders/d6/csv1tvn17x3_xvv82fcgx_bh0000gn/T/fe-kit-smoke-vue-webpack-dNDSSY/app/node_modules/.pnpm/ts-loader@9.5.7_typescript@5.9.3_webpack@5.106.2/node_modules/ts-loader/dist/index.js:55:18)
+    at successLoader (/private/var/folders/d6/csv1tvn17x3_xvv82fcgx_bh0000gn/T/fe-kit-smoke-vue-webpack-dNDSSY/app/node_modules/.pnpm/ts-loader@9.5.7_typescript@5.9.3_webpack@5.106.2/node_modules/ts-loader/dist/index.js:42:5)
+    at Object.loader (/private/var/folders/d6/csv1tvn17x3_xvv82fcgx_bh0000gn/T/fe-kit-smoke-vue-webpack-dNDSSY/app/node_modules/.pnpm/ts-loader@9.5.7_typescript@5.9.3_webpack@5.106.2/node_modules/ts-loader/dist/index.js:23:5)
+
+ERROR in /private/var/folders/d6/csv1tvn17x3_xvv82fcgx_bh0000gn/T/fe-kit-smoke-vue-webpack-dNDSSY/app/src/main.ts
+./src/main.ts 2:16-27
+[tsl] ERROR in /private/var/folders/d6/csv1tvn17x3_xvv82fcgx_bh0000gn/T/fe-kit-smoke-vue-webpack-dNDSSY/app/src/main.ts(2,17)
+      TS2307: Cannot find module './App.vue' or its corresponding type declarations.
+ts-loader-default_0c5a263502dc9404
+
+webpack 5.106.2 compiled with 2 errors in 787 ms
+ ELIFECYCLE  Command failed with exit code 1.
+FAIL vue-webpack: Command failed (1): pnpm run build
+
+=== Smoke: vue-rspack ===
+→ Starting new project initialization...
+✔ Template vue-rspack-ts copied
+✔ package.json configured
+✔ Bootstrap conventions written to docs/bootstrap and .github/
+✔ ESLint 9 flat config generated
+✔ Prettier config generated
+✔ Rules for vue written to .fe-kit/rules/
+✔ .fe-kit/ metadata written
+✔ README.md generated
+→ Applying config for vscode...
+✔ VS Code: extensions.json + .github/copilot-instructions.md updated
+✔ Project "smoke-vue-rspack" created at /var/folders/d6/csv1tvn17x3_xvv82fcgx_bh0000gn/T/fe-kit-smoke-vue-rspack-RaHmlO/app
+Progress: resolved 1, reused 0, downloaded 0, added 0
+Progress: resolved 22, reused 22, downloaded 0, added 0
+Progress: resolved 23, reused 22, downloaded 0, added 0
+Progress: resolved 32, reused 32, downloaded 0, added 0
+Progress: resolved 36, reused 36, downloaded 0, added 0
+ WARN  GET https://registry.npmjs.org/cross-spawn error (ECONNRESET). Will retry in 10 seconds. 2 retries left.
+ WARN  GET https://registry.npmjs.org/minimatch error (ECONNRESET). Will retry in 10 seconds. 2 retries left.
+ WARN  GET https://registry.npmjs.org/glob-parent error (ECONNRESET). Will retry in 10 seconds. 2 retries left.
+ WARN  GET https://registry.npmjs.org/imurmurhash error (ECONNRESET). Will retry in 10 seconds. 2 retries left.
+ WARN  GET https://registry.npmjs.org/optionator error (ECONNRESET). Will retry in 10 seconds. 2 retries left.
+Progress: resolved 37, reused 36, downloaded 0, added 0
+Progress: resolved 45, reused 45, downloaded 0, added 0
+Progress: resolved 64, reused 64, downloaded 0, added 0
+Progress: resolved 68, reused 68, downloaded 0, added 0
+Progress: resolved 87, reused 78, downloaded 0, added 0
+Progress: resolved 104, reused 95, downloaded 0, added 0
+Progress: resolved 120, reused 111, downloaded 0, added 0
+Progress: resolved 135, reused 126, downloaded 0, added 0
+Progress: resolved 144, reused 135, downloaded 0, added 0
+Progress: resolved 152, reused 143, downloaded 0, added 0
+Progress: resolved 159, reused 150, downloaded 0, added 0
+Progress: resolved 170, reused 161, downloaded 0, added 0
+Progress: resolved 179, reused 170, downloaded 0, added 0
+Progress: resolved 193, reused 184, downloaded 0, added 0
+Progress: resolved 208, reused 199, downloaded 0, added 0
+Progress: resolved 220, reused 211, downloaded 0, added 0
+Progress: resolved 226, reused 217, downloaded 0, added 0
+Progress: resolved 245, reused 236, downloaded 0, added 0
+Progress: resolved 264, reused 255, downloaded 0, added 0
+Progress: resolved 279, reused 270, downloaded 0, added 0
+Progress: resolved 296, reused 287, downloaded 0, added 0
+Progress: resolved 306, reused 297, downloaded 0, added 0
+Progress: resolved 318, reused 309, downloaded 0, added 0
+Progress: resolved 338, reused 329, downloaded 0, added 0
+Progress: resolved 354, reused 345, downloaded 0, added 0
+Progress: resolved 366, reused 357, downloaded 0, added 0
+Progress: resolved 383, reused 374, downloaded 0, added 0
+Progress: resolved 395, reused 386, downloaded 0, added 0
+Progress: resolved 396, reused 386, downloaded 0, added 0
+Progress: resolved 404, reused 395, downloaded 0, added 0
+Progress: resolved 405, reused 396, downloaded 0, added 0
+Progress: resolved 406, reused 397, downloaded 0, added 0
+Progress: resolved 410, reused 401, downloaded 0, added 0
+Progress: resolved 440, reused 431, downloaded 0, added 0
+Progress: resolved 449, reused 440, downloaded 0, added 0
+Progress: resolved 452, reused 443, downloaded 0, added 0
+Progress: resolved 457, reused 448, downloaded 0, added 0
+ WARN  1 deprecated subdependencies found: uuid@8.3.2
+Packages: +446
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Progress: resolved 460, reused 451, downloaded 0, added 102
+Progress: resolved 460, reused 451, downloaded 0, added 404
+Progress: resolved 460, reused 451, downloaded 0, added 446, done
+
+dependencies:
++ pinia 2.3.1 (3.0.4 is available)
++ vue 3.5.34
++ vue-router 4.6.4 (5.0.7 is available)
+
+devDependencies:
++ @eslint/js 9.39.4 (10.0.1 is available)
++ @rspack/cli 1.7.11 (2.0.3 is available)
++ @rspack/core 1.7.11 (2.0.3 is available)
++ @types/node 24.12.4 (25.7.0 is available)
++ @vue/tsconfig 0.9.1
++ eslint 9.39.4 (10.3.0 is available)
++ eslint-plugin-vue 10.9.1
++ globals 16.5.0 (17.6.0 is available)
++ prettier 3.8.3
++ typescript 5.9.3 (6.0.3 is available)
++ typescript-eslint 8.59.3
++ vue-loader 17.4.2
++ vue-tsc 3.2.8
+
+Done in 51.4s using pnpm v9.15.9
+
+> smoke-vue-rspack@0.1.0 typecheck /private/var/folders/d6/csv1tvn17x3_xvv82fcgx_bh0000gn/T/fe-kit-smoke-vue-rspack-RaHmlO/app
+> vue-tsc --noEmit
+
+
+> smoke-vue-rspack@0.1.0 build /private/var/folders/d6/csv1tvn17x3_xvv82fcgx_bh0000gn/T/fe-kit-smoke-vue-rspack-RaHmlO/app
+> rspack build --config rspack.config.cjs
+
+Rspack compiled successfully in 100 ms
+PASS vue-rspack
+
+Smoke summary: 5 passed, 1 failed
+ ELIFECYCLE  Command failed with exit code 1.

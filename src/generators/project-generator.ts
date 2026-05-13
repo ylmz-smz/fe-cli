@@ -2,12 +2,25 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import fs from 'fs-extra';
 import type { InitAnswers } from '../types/selections.js';
+import { SCAFFOLD_VERSIONS } from '../constants/dependency-versions.js';
 import { logger } from '../utils/logger.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-function templateDir(framework: string, bundler: string): string {
-  return path.resolve(__dirname, '..', 'templates', `${framework}-${bundler}-ts`);
+async function resolveTemplateDir(framework: string, bundler: string): Promise<string | null> {
+  const dirName = `${framework}-${bundler}-ts`;
+  const candidates = [
+    path.resolve(__dirname, '..', 'templates', dirName),
+    path.resolve(__dirname, 'templates', dirName),
+  ];
+
+  for (const candidate of candidates) {
+    if (await fs.pathExists(candidate)) {
+      return candidate;
+    }
+  }
+
+  return null;
 }
 
 export async function generateProject(answers: InitAnswers): Promise<void> {
@@ -15,8 +28,8 @@ export async function generateProject(answers: InitAnswers): Promise<void> {
 
   await fs.ensureDir(projectPath);
 
-  const srcTemplate = templateDir(framework, bundler);
-  if (await fs.pathExists(srcTemplate)) {
+  const srcTemplate = await resolveTemplateDir(framework, bundler);
+  if (srcTemplate) {
     await fs.copy(srcTemplate, projectPath, { overwrite: false });
     logger.success(`Template ${framework}-${bundler}-ts copied`);
   } else {
@@ -55,6 +68,12 @@ async function ensureNextStyleScaffold(projectPath: string, framework: InitAnswe
 
 async function generateMinimalProject(answers: InitAnswers): Promise<void> {
   const { projectPath, framework, bundler } = answers;
+
+  if (framework === 'next') {
+    await generateMinimalNextProject(projectPath);
+    return;
+  }
+
   const srcDir = path.join(projectPath, 'src');
   await fs.ensureDir(srcDir);
 
@@ -109,6 +128,19 @@ async function generateMinimalProject(answers: InitAnswers): Promise<void> {
       ].join('\n'),
       'utf-8',
     );
+
+    await fs.writeFile(
+      path.join(srcDir, 'env.d.ts'),
+      [
+        "declare module '*.vue' {",
+        "  import type { DefineComponent } from 'vue';",
+        '  const component: DefineComponent<{}, {}, any>;',
+        '  export default component;',
+        '}',
+        '',
+      ].join('\n'),
+      'utf-8',
+    );
   }
 
   await fs.writeFile(
@@ -152,6 +184,78 @@ async function generateMinimalProject(answers: InitAnswers): Promise<void> {
   await writeBundlerConfig(projectPath, framework, bundler);
 }
 
+async function generateMinimalNextProject(projectPath: string): Promise<void> {
+  const appDir = path.join(projectPath, 'app');
+  await fs.ensureDir(appDir);
+
+  await fs.writeFile(
+    path.join(appDir, 'layout.tsx'),
+    [
+      "import type { ReactNode } from 'react';",
+      '',
+      'export default function RootLayout({ children }: { children: ReactNode }) {',
+      '  return (',
+      "    <html lang=\"en\">",
+      '      <body>{children}</body>',
+      '    </html>',
+      '  );',
+      '}',
+      '',
+    ].join('\n'),
+    'utf-8',
+  );
+
+  await fs.writeFile(
+    path.join(appDir, 'page.tsx'),
+    [
+      'export default function HomePage() {',
+      '  return <main>Hello fe-kit + Next.js</main>;',
+      '}',
+      '',
+    ].join('\n'),
+    'utf-8',
+  );
+
+  await fs.writeFile(
+    path.join(projectPath, 'next-env.d.ts'),
+    [
+      '/// <reference types="next" />',
+      '/// <reference types="next/image-types/global" />',
+      '',
+      '// NOTE: This file should not be edited',
+      '',
+    ].join('\n'),
+    'utf-8',
+  );
+
+  await fs.writeJson(
+    path.join(projectPath, 'tsconfig.json'),
+    {
+      compilerOptions: {
+        target: 'ES2020',
+        lib: ['dom', 'dom.iterable', 'esnext'],
+        allowJs: true,
+        skipLibCheck: true,
+        strict: true,
+        noEmit: true,
+        esModuleInterop: true,
+        module: 'esnext',
+        moduleResolution: 'bundler',
+        resolveJsonModule: true,
+        isolatedModules: true,
+        jsx: 'preserve',
+        incremental: true,
+        plugins: [{ name: 'next' }],
+        baseUrl: '.',
+        paths: { '@/*': ['*'] },
+      },
+      include: ['next-env.d.ts', '**/*.ts', '**/*.tsx', '.next/types/**/*.ts'],
+      exclude: ['node_modules'],
+    },
+    { spaces: 2 },
+  );
+}
+
 async function writeBundlerConfig(
   projectPath: string,
   framework: string,
@@ -180,12 +284,12 @@ async function writeBundlerConfig(
     );
   } else if (bundler === 'webpack') {
     await fs.writeFile(
-      path.join(projectPath, 'webpack.config.ts'),
+      path.join(projectPath, 'webpack.config.cjs'),
       [
         "// Webpack config placeholder — full template coming in P1",
-        "import path from 'path';",
+        "const path = require('path');",
         '',
-        'export default {',
+        'module.exports = {',
         "  mode: 'development',",
         "  entry: './src/main." + (framework === 'react' ? 'tsx' : 'ts') + "',",
         '  resolve: {',
@@ -197,13 +301,18 @@ async function writeBundlerConfig(
     );
   } else if (bundler === 'rspack') {
     await fs.writeFile(
-      path.join(projectPath, 'rspack.config.ts'),
+      path.join(projectPath, 'rspack.config.cjs'),
       [
         "// Rspack config placeholder — full template coming in P1",
-        "import { defineConfig } from '@rspack/cli';",
+        "const { defineConfig } = require('@rspack/cli');",
         '',
-        'export default defineConfig({',
+        'module.exports = defineConfig({',
         "  entry: { main: './src/main." + (framework === 'react' ? 'tsx' : 'ts') + "' },",
+        '  module: {',
+        '    rules: [',
+        "      { test: /\\.tsx?$/, exclude: /node_modules/, loader: 'builtin:swc-loader' },",
+        '    ],',
+        '  },',
         '});',
       ].join('\n'),
       'utf-8',
@@ -227,73 +336,117 @@ async function patchPackageJson(
 
   const deps: Record<string, string> = { ...existing.dependencies };
   const devDeps: Record<string, string> = { ...existing.devDependencies };
+  const versions = SCAFFOLD_VERSIONS;
 
   if (framework === 'vue') {
-    deps.vue = '^3.5.0';
-    if (router === 'vue-router') deps['vue-router'] = '^4.5.0';
-    if (stateManagement === 'pinia') deps.pinia = '^2.3.0';
-    if (stateManagement === 'vuex') deps.vuex = '^4.1.0';
-  } else {
-    deps.react = '^19.0.0';
-    deps['react-dom'] = '^19.0.0';
-    devDeps['@types/react'] = '^19.0.0';
-    devDeps['@types/react-dom'] = '^19.0.0';
-    if (router === 'react-router') deps['react-router-dom'] = '^7.0.0';
+    deps.vue = versions.framework.vue;
+    if (router === 'vue-router') deps['vue-router'] = versions.framework.vueRouter;
+    if (stateManagement === 'pinia') deps.pinia = versions.framework.pinia;
+    if (stateManagement === 'vuex') deps.vuex = versions.framework.vuex;
+
+    devDeps['vue-tsc'] = versions.language.vueTsc;
+    devDeps['@vue/tsconfig'] = versions.language.vueTsconfig;
+    devDeps['@types/node'] = versions.language.nodeTypes;
+  } else if (framework === 'react') {
+    deps.react = versions.framework.react;
+    deps['react-dom'] = versions.framework.reactDom;
+    devDeps['@types/react'] = versions.framework.reactTypes;
+    devDeps['@types/react-dom'] = versions.framework.reactDomTypes;
+    if (router === 'react-router') deps['react-router-dom'] = versions.framework.reactRouterDom;
     if (stateManagement === 'redux-toolkit') {
-      deps['@reduxjs/toolkit'] = '^2.6.0';
-      deps['react-redux'] = '^9.2.0';
+      deps['@reduxjs/toolkit'] = versions.framework.reduxToolkit;
+      deps['react-redux'] = versions.framework.reactRedux;
     }
-    if (stateManagement === 'zustand') deps.zustand = '^5.0.0';
+    if (stateManagement === 'zustand') deps.zustand = versions.framework.zustand;
     if (stateManagement === 'mobx') {
-      deps.mobx = '^6.13.0';
-      deps['mobx-react-lite'] = '^4.1.0';
+      deps.mobx = versions.framework.mobx;
+      deps['mobx-react-lite'] = versions.framework.mobxReactLite;
     }
+  } else {
+    deps.next = versions.framework.next;
+    deps.react = versions.framework.react;
+    deps['react-dom'] = versions.framework.reactDom;
+    devDeps['@types/react'] = versions.framework.reactTypes;
+    devDeps['@types/react-dom'] = versions.framework.reactDomTypes;
+    devDeps['@types/node'] = versions.language.nodeTypes;
+
+    if (stateManagement === 'redux-toolkit') {
+      deps['@reduxjs/toolkit'] = versions.framework.reduxToolkit;
+      deps['react-redux'] = versions.framework.reactRedux;
+    }
+    if (stateManagement === 'zustand') deps.zustand = versions.framework.zustand;
   }
 
-  devDeps.typescript = '^5.8.0';
+  devDeps.typescript = versions.language.typescript;
 
   if (bundler === 'vite') {
-    devDeps.vite = '^6.3.0';
-    if (framework === 'react') devDeps['@vitejs/plugin-react'] = '^4.4.0';
-    if (framework === 'vue') devDeps['@vitejs/plugin-vue'] = '^5.2.0';
+    devDeps.vite = versions.bundler.vite;
+    if (framework === 'react') devDeps['@vitejs/plugin-react'] = versions.bundler.vitePluginReact;
+    if (framework === 'vue') devDeps['@vitejs/plugin-vue'] = versions.bundler.vitePluginVue;
   } else if (bundler === 'webpack') {
-    devDeps.webpack = '^5.99.0';
-    devDeps['webpack-cli'] = '^6.0.0';
-    devDeps['ts-loader'] = '^9.5.0';
+    devDeps.webpack = versions.bundler.webpack;
+    devDeps['webpack-cli'] = versions.bundler.webpackCli;
+    devDeps['webpack-dev-server'] = versions.bundler.webpackDevServer;
+    devDeps['ts-loader'] = versions.bundler.tsLoader;
+    devDeps['css-loader'] = versions.bundler.cssLoader;
+    devDeps['style-loader'] = versions.bundler.styleLoader;
+    devDeps['html-webpack-plugin'] = versions.bundler.htmlWebpackPlugin;
+
+    if (framework === 'vue') {
+      devDeps['vue-loader'] = versions.bundler.vueLoader;
+    }
   } else if (bundler === 'rspack') {
-    devDeps['@rspack/core'] = '^1.3.0';
-    devDeps['@rspack/cli'] = '^1.3.0';
+    devDeps['@rspack/core'] = versions.bundler.rspackCore;
+    devDeps['@rspack/cli'] = versions.bundler.rspackCli;
+
+    if (framework === 'vue') {
+      devDeps['vue-loader'] = versions.bundler.rspackVueLoader;
+    }
   }
 
   const scripts: Record<string, string> = { ...existing.scripts };
   if (bundler === 'vite') {
     scripts.dev = 'vite';
-    scripts.build = 'vite build';
+    scripts.build = framework === 'vue' ? 'vue-tsc -b && vite build' : 'vite build';
     scripts.preview = 'vite preview';
   } else if (bundler === 'webpack') {
-    scripts.dev = 'webpack serve --mode development';
-    scripts.build = 'webpack --mode production';
+    scripts.dev = 'webpack serve --config webpack.config.cjs --mode development';
+    scripts.build = 'webpack --config webpack.config.cjs --mode production';
   } else if (bundler === 'rspack') {
-    scripts.dev = 'rspack serve';
-    scripts.build = 'rspack build';
+    scripts.dev = 'rspack serve --config rspack.config.cjs';
+    scripts.build = 'rspack build --config rspack.config.cjs';
+  } else if (bundler === 'next') {
+    scripts.dev = 'next dev';
+    scripts.build = 'next build';
+    scripts.start = 'next start';
   }
 
-  scripts.typecheck ??= 'tsc --noEmit';
+  scripts.typecheck ??= framework === 'vue' ? 'vue-tsc --noEmit' : 'tsc --noEmit';
   scripts.test ??= 'node --test ./tests/**/*.test.mjs';
+
   if (lintTools.includes('eslint')) {
     scripts.lint ??= 'eslint .';
   }
+  if (lintTools.includes('prettier')) {
+    scripts.format ??= 'prettier --write .';
+    scripts['format:check'] ??= 'prettier --check .';
+  }
 
-  const pkg = {
+  const pkg: Record<string, unknown> = {
     ...existing,
     name,
     version: '0.1.0',
     private: true,
-    type: 'module',
     scripts,
     dependencies: deps,
     devDependencies: devDeps,
   };
+
+  if (framework !== 'next') {
+    pkg.type = 'module';
+  } else {
+    delete pkg.type;
+  }
 
   await fs.writeJson(pkgPath, pkg, { spaces: 2 });
 }

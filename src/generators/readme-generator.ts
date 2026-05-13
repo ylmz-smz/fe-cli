@@ -4,6 +4,14 @@ import type { InitAnswers } from '../types/selections.js';
 import { logger } from '../utils/logger.js';
 
 function scriptBlock(bundler: InitAnswers['bundler']): string {
+  if (bundler === 'next') {
+    return [
+      '- `pnpm dev`：启动 Next.js 开发服务器',
+      '- `pnpm build`：构建生产产物',
+      '- `pnpm start`：启动生产服务',
+    ].join('\n');
+  }
+
   if (bundler === 'vite') {
     return [
       '- `pnpm dev`：启动开发服务器',
@@ -27,6 +35,12 @@ function scriptBlock(bundler: InitAnswers['bundler']): string {
 }
 
 function structureBlock(framework: InitAnswers['framework']): string {
+  const entryFile = framework === 'react'
+    ? 'main.tsx'
+    : framework === 'next'
+      ? 'app/page.tsx'
+      : 'main.ts';
+
   const lines: string[] = [
     '```text',
     '.',
@@ -38,7 +52,7 @@ function structureBlock(framework: InitAnswers['framework']): string {
     '│  ├─ layouts/                 # 布局壳层',
     '│  ├─ theme/                   # 主题与设计令牌',
     '│  ├─ assets/                  # 静态资源与素材',
-    '│  └─ ' + (framework === 'react' ? 'main.tsx' : 'main.ts') + '               # 入口文件',
+    '│  └─ ' + entryFile + '               # 入口文件',
     '├─ .fe-kit/                    # fe-kit 生成的元数据与规则',
     '├─ docs/                       # 文档与 bootstrap 约束产物',
     '├─ plan/                       # 计划与执行记录',
