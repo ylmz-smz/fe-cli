@@ -1,6 +1,6 @@
 {
   "name": "fe-kit-cli",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "Frontend project scaffold CLI — init, enhance, and manage dev tools, skills, MCP, and framework rules.",
   "type": "module",
   "packageManager": "pnpm@9.15.9",
@@ -12,6 +12,9 @@
     "dev": "tsup --watch",
     "start": "node dist/cli.mjs",
     "test": "node --import tsx --test",
+    "test:smoke:detect": "node scripts/smoke-detect.mjs",
+    "test:smoke:templates": "node scripts/smoke-templates.mjs",
+    "test:smoke": "pnpm run build && pnpm run test:smoke:detect && pnpm run test:smoke:templates",
     "typecheck": "tsc --noEmit",
     "bump:version": "node scripts/bump-version.mjs",
     "changeset": "changeset",
